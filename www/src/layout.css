@@ -128,6 +128,7 @@ h1{
 
 .art-caption-place{
     height:74px;
+    width: 240px;
     margin:8px;
     color: #abc1dd;
     font-size: 20px;
@@ -171,4 +172,90 @@ h1{
 
 .art-buttons > button:last-child{
     margin-right: 8px; 
+}
+
+.art-progressbar-place{
+    float: left;
+    height:74px;
+    margin: 8px;
+    margin-left: 10px;
+    width: calc(100% - 700px);
+}
+
+.art-thumbs-place{
+    height: 74px;
+    margin: 8px 24px 8px 8px;
+    float: left;
+}
+
+.art-thumbsup-place{
+    float:left;
+    height: 74px;
+    line-height:74px;
+    margin-right: 10px;
+}
+
+.art-thumbsdown-place{
+    float:left;
+    height: 74px;
+    line-height:74px;
+    margin-left:10px;
+}
+
+.art-likes-place{
+    float:left;
+    line-height:74px;
+    height: 74px;
+    font-size: 20px;
+    color: #abc1dd;
+}
+
+.thumbimage:hover{
+    cursor:pointer;
+    filter: invert(41%) sepia(9%) saturate(763%) hue-rotate(202deg) brightness(92%) contrast(91%);
+}
+
+.thumbimage-up{
+    translate: 0px 5px;
+    height:30px;
+}
+
+.thumbimage-down{
+    translate: 0px 10px;
+    height:30px;
+}
+
+.art-progressbar{
+    background-color: #191919;
+    height:26px;
+    border-radius: 5px;
+}
+
+.art-progressbar-progress{
+    background-color: #abc1dd;
+    height:26px;
+    border-radius: 5px;
+}
+
+.art-progressbar-caption{
+    height: 48px;
+}
+
+.art-bar{
+    margin-bottom: 16px;
+}
+
+.button-history{
+    text-align: center;
+    margin-left: auto;
+    margin-right:auto;
+    display: block;
+    height: 45px;
+    width: 250px;
+}
+
+.button-history-place{
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }

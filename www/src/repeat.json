@@ -1,0 +1,25 @@
+{
+    "toRepeat":[
+        {
+            "id":"5365",
+            "word":"wasureta",
+            "translation":"forgot",
+            "goodAnswers":["forgot"],
+            "goodWriteAnswers":["wasureta"]
+        },
+        {
+            "id":"2643",
+            "word":"daijoubu",
+            "translation":"Are you ok?",
+            "goodAnswers":["are you ok", "are you ok?"],
+            "goodWriteAnswers":["daijoubu"]
+        },
+        {
+            "id":"3743",
+            "word":"okasan",
+            "translation":"mother",
+            "goodAnswers":["mother"],
+            "goodWriteAnswers":["okasan"]
+        }
+    ]
+}

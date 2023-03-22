@@ -4,6 +4,12 @@ body{
 
 nav > ul > li{
     color: #abc1dd;
+    height: 60px;
+}
+
+nav > ul > li:hover{
+    color: #ebf1fd;
+    cursor: pointer;
 }
 
 .butt:hover{
@@ -24,13 +30,21 @@ nav > ul > li{
     color: #fff;
 }
 
+.b-secondary:hover{
+    background-color: #3d3e3f;
+}
+
 .b-third{
     background-color: #313333;
     color: #abc1dd;
 }
 
+.b-third:hover{
+    background-color: #212222;
+}
+
 .b-shadow{
-    text-shadow: 2px 0px 12px #00000060;
+    box-shadow: 2px 0px 12px #00000060 !important;
 }
 
 h1{
