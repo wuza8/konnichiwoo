@@ -4,35 +4,39 @@
 <head>
     <link rel="stylesheet" href="dark.css">
     <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="repetition.css">
 
     <script>
-        function init(){
-            fetch('art-template.html')
-            .then((response) => response.text())
-            .then((data) => loadArts(data));
+        class TestParts {
+            constructor(wordId, testType, passed) {
+                this.wordId = wordId;
+                this.testType = testType;
+                this.passed = passed;
+            }
         }
-        
-        function loadArts(template) {
-            fetch('history.json')
+
+        words = [];
+        register = [];
+
+        function init(){
+            fetch('repeat.json')
             .then((response) => response.json())
             .then((data) => {
-                data.history.forEach(h => {
-                    code = new String(template);
-
-                    code = code.replaceAll("{{title}}", h.title);
-                    code = code.replaceAll("{{type}}", h.type);
-                    code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
-                    code = code.replaceAll("{{progressPercent}}", h.progress);
-                    code = code.replaceAll("{{mapper}}", h.mapper);
-                    code = code.replaceAll("{{thumbs}}", h.thumbs);
-                    code = code.replaceAll("{{progressPercent}}", h.progress);
-
-                    document.getElementById("history-art-place").innerHTML += code;
-                });
+                words = data.toRepeat;
+                onDataLoad();
             })
         }
 
+        function onDataLoad(){
+            console.log(words);
+        }
+
+        function createRegister(){
+            
+        }
+
         init();
+
     </script>
 </head>
 
@@ -40,29 +44,33 @@
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
-            <li>Learn</li>
-            <li>Forum</li>
-            <li>My profile</li>
-            <li>Settings</li>
+            <li>End session</li>
         </ul>
         <div id="rightSideButtons">
-            <button class="butt b-secondary">+ New</button>
-            <button class="butt b-primary">Start repetition</button>
             <button class="butt b-secondary">Logout</button>
         </div>
     </nav>
-    <div id="content-b">
-        <div class="selection-bar">Continue learning
-            <div class="selection-bar-end"></div>
-        </div>
-        <span id="history-art-place"></span>
-        <div class="button-history-place">
-            <button class="butt b-secondary button-history">Show all history</button>
+    
+
+    <div id="repeptition-main">
+        <div id="repetition-image-place">
+            <div id="repetition-image" style='background-image: url("luckystar.png")'>
+                <!-- <img class="repetition-img" src="luckystar.png"> -->
+            </div>
+            <div id="repetition-caption">
+                Pablo
+            </div>
         </div>
 
-        <div class="selection-bar">Find new stuff
-            <div class="selection-bar-end" style="width: calc(100% - 152px);"></div>
+        <div id="repetition-answer-place">
+            <input type="text" class="input-text" id="repetition-answer" placeholder="Write answer here">
+        </div>
+
+        <div id="repetition-answer-place">
+            <button class="butt b-secondary">I don't know</button>
+            <button class="butt b-primary">Check</button>
         </div>
     </div>
+
 </body>
 </HTML>

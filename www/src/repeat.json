@@ -5,7 +5,10 @@
             "word":"wasureta",
             "translation":"forgot",
             "goodAnswers":["forgot"],
-            "goodWriteAnswers":["wasureta"]
+            "goodWriteAnswers":["wasureta"],
+            "otherWriteForms":[
+                "忘れた"
+            ]
         },
         {
             "id":"2643",

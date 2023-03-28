@@ -1,0 +1,54 @@
+#repeptition-main{
+    width:1000px;
+    margin-left: auto;
+    margin-right:auto;
+}
+
+#repetition-image-place{
+    width: 100%;
+    height: 600px;
+    border-radius:5px;
+    background-color: #4e4c4c;
+}
+
+#repetition-image{
+    padding:0px;
+    height: 540px;
+    width:100%;
+    text-align:center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+#repetition-caption{
+    height:60px;
+    width:100%;
+    text-align:center;
+    font-size:25px;
+    line-height:60px;
+    color: white;
+    background-color: #646262;
+    border-radius:5px;
+}
+
+.repetition-img{
+    height:530px;
+    margin:0px;
+    padding:0px;
+    display:flex;
+}
+
+#repetition-answer-place{
+    width:100%;
+    margin-top:20px;
+    text-align:center;
+}
+
+#repetition-answer-place > .butt{
+    width: 200px;
+}
+
+#repetition-answer-place > .butt:first-child{
+    margin-right:40px;
+}
