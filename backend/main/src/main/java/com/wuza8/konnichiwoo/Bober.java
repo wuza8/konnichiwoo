@@ -9,14 +9,14 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api")
-public class Endpoints {
+@RequestMapping("/bobi")
+public class Bober {
 
     @GetMapping("login")
     public String bober (Principal principal) {
         // attributes.addFlashAttribute("flashAttribute", "redirectWithRedirectView");
         // attributes.addAttribute("attribute", "redirectWithRedirectView");
         // return new RedirectView("http://localhost:8000/src/index.html");
-        return principal.hasRole("GOG");
+        return principal.hasRole();
     }
 }

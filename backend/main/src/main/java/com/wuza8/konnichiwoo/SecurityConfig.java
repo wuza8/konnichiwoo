@@ -27,16 +27,16 @@ class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .requestMatchers("/api/*")
+        http.authorizeHttpRequests()
+                .requestMatchers("/api/login")
                 .hasRole("USER")
                 .anyRequest()
                 .permitAll();
-//        http.oauth2Login()
-//                .and()
-//                .logout()
-//                .addLogoutHandler(keycloakLogoutHandler)
-//                .logoutSuccessUrl("/");
+       http.oauth2Login()
+               .and()
+               .logout()
+               .addLogoutHandler(keycloakLogoutHandler)
+               .logoutSuccessUrl("/");
         http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
     }

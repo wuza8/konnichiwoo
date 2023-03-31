@@ -7,16 +7,33 @@
     <link rel="stylesheet" href="repetition.css">
 
     <script>
+        TestType = {
+            "ShowNewWord": 0,
+            "EngToJapan": 1,
+            "JapanToEng": 2,
+            "RealWriting": 3
+        }
+        
         class TestParts {
-            constructor(wordId, testType, passed) {
-                this.wordId = wordId;
+            constructor(word, testType) {
+                this.word = word;
                 this.testType = testType;
-                this.passed = passed;
+                this.passed = false;
             }
         }
 
         words = [];
         register = [];
+        done = [];
+        repetitionSteps = ["ShowNewWords", "Repeat"];
+
+        repetitionCaption = 0;
+        repetitionAnswer = 0;
+        buttIdk = 0;
+        buttCheck = 0;
+        buttOk = 0;
+
+        answerForm = 0;
 
         function init(){
             fetch('repeat.json')
@@ -28,15 +45,135 @@
         }
 
         function onDataLoad(){
+            loadElements();
             console.log(words);
+            createRegister();
+            console.log(register);
+            loadNextTest();
         }
 
         function createRegister(){
-            
+            words.forEach(wordDesc => {
+                if(wordDesc.isNew)
+                    register.push(new TestParts(wordDesc,TestType.ShowNewWord));
+            });
+            words.forEach(wordDesc => {
+                register.push(new TestParts(wordDesc,TestType.JapanToEng));
+            });
+            words.forEach(wordDesc => {
+                register.push(new TestParts(wordDesc,TestType.EngToJapan));
+                
+            });
+            words.forEach(wordDesc => {
+                register.push(new TestParts(wordDesc,TestType.RealWriting));
+            });
+        }
+
+        function loadElements(){
+            repetitionCaption = document.getElementById("repetition-caption");
+            repetitionAnswer = document.getElementById("repetition-answer");
+            buttIdk = document.getElementById("butt-idk");
+            buttCheck = document.getElementById("butt-check");
+            buttOk = document.getElementById("butt-ok");
+            answerForm = document.getElementById("submitAnswer");
+            answerForm.addEventListener('submit',function(event){
+                event.preventDefault();
+                onCheckClick();
+            });
+        }
+
+        function loadNextTest(){
+            test = register[0];
+
+            if(test == undefined){
+                endGame();
+                return;
+            }
+
+            console.log(test);
+
+            if(test.testType == TestType.ShowNewWord){
+                repetitionAnswer.style.display="none";
+                buttIdk.style.display="none";
+                buttCheck.style.display="none";
+                buttOk.style.display="inline-block";
+                repetitionCaption.innerHTML = test.word.otherWriteForms[0] + " = " + test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[0];
+            }
+            else {
+                repetitionAnswer.style.display="block";
+                buttIdk.style.display="inline-block";
+                buttCheck.style.display="inline-block";
+                buttOk.style.display="none";
+                if(test.testType == TestType.JapanToEng)
+                    repetitionCaption.innerHTML = test.word.goodWriteAnswers[0];
+                else if(test.testType == TestType.EngToJapan)
+                    repetitionCaption.innerHTML = test.word.goodAnswers[0];
+                else if(test.testType == TestType.RealWriting)
+                    repetitionCaption.innerHTML = test.word.otherWriteForms[0];
+            }
+
+
+            repetitionAnswer.value = "";
+        }
+
+        function onOkClick(){
+            done.push(register[0]);
+            register.shift();
+            loadNextTest();
+        }
+
+        function onCheckClick(){
+            test = register[0];
+            answer = repetitionAnswer.value;
+            goodAnswers = [];
+            isAnswerGood = false;
+
+            if(test.testType == TestType.JapanToEng){
+                goodAnswers = test.word.goodAnswers;
+            }
+            else{
+                goodAnswers = test.word.goodWriteAnswers;
+            }
+
+            goodAnswers.forEach( word => {
+                if(answer == word) isAnswerGood = true;
+            });
+
+            console.log(isAnswerGood);
+
+            if(isAnswerGood){
+                done.push(register[0]);
+                register.shift();
+                repetitionCaption.style.background="#44cc44";
+            }
+            else{
+                register.push(register[0]);
+                register.shift();
+                repetitionCaption.style.background="#cc4444";
+            }
+
+            setTimeout(function(){
+                repetitionCaption.style.background="#646262";
+            }, 1000);
+
+            loadNextTest();
+        }
+
+        function onIdkClick(){
+            test = register[0];
+            register.push(test);
+            register.shift();
+            register.unshift(new TestParts(test.word, TestType.ShowNewWord));
+            loadNextTest();
+        }
+
+        function endGame(){
+            document.getElementById("repetition-main").style.display="none";
+            document.getElementById("repetition-results").style.display="block";
         }
 
         init();
-
+        
     </script>
 </head>
 
@@ -52,7 +189,7 @@
     </nav>
     
 
-    <div id="repeptition-main">
+    <div id="repetition-main" class="repetition-main">
         <div id="repetition-image-place">
             <div id="repetition-image" style='background-image: url("luckystar.png")'>
                 <!-- <img class="repetition-img" src="luckystar.png"> -->
@@ -63,12 +200,21 @@
         </div>
 
         <div id="repetition-answer-place">
-            <input type="text" class="input-text" id="repetition-answer" placeholder="Write answer here">
+            <form id="submitAnswer">
+                <input type="text" class="input-text" id="repetition-answer" placeholder="Write answer here">
+            </form>
         </div>
 
         <div id="repetition-answer-place">
-            <button class="butt b-secondary">I don't know</button>
-            <button class="butt b-primary">Check</button>
+            <button id="butt-idk" class="butt b-secondary" onclick="onIdkClick()">I don't know</button>
+            <button id="butt-check" class="butt b-primary" onclick="onCheckClick()">Check</button>
+            <button id="butt-ok" class="butt b-primary" onclick="onOkClick()">Ok</button>
+        </div>
+    </div>
+
+    <div style="display:none" class="repetition-main" id="repetition-results">
+        <div id="repetition-end">
+            <h2>Repetition end!</h2>
         </div>
     </div>
 

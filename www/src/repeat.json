@@ -8,21 +8,30 @@
             "goodWriteAnswers":["wasureta"],
             "otherWriteForms":[
                 "忘れた"
-            ]
+            ],
+            "isNew":true
         },
         {
             "id":"2643",
             "word":"daijoubu",
             "translation":"Are you ok?",
             "goodAnswers":["are you ok", "are you ok?"],
-            "goodWriteAnswers":["daijoubu"]
+            "goodWriteAnswers":["daijoubu"],
+            "otherWriteForms":[
+                "大丈夫"
+            ],
+            "isNew":true
         },
         {
             "id":"3743",
             "word":"okasan",
             "translation":"mother",
             "goodAnswers":["mother"],
-            "goodWriteAnswers":["okasan"]
+            "goodWriteAnswers":["okasan"],
+            "otherWriteForms":[
+                "お母さん"
+            ],
+            "isNew":false
         }
     ]
 }
