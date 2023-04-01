@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,7 @@ public class KeycloakLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response,
-                       Authentication auth) {
+                       @AuthenticationPrincipal Authentication auth) {
         logoutFromKeycloak((OidcUser) auth.getPrincipal());
     }
 
@@ -38,7 +40,8 @@ public class KeycloakLogoutHandler implements LogoutHandler {
         ResponseEntity<String> logoutResponse = restTemplate.getForEntity(
                 builder.toUriString(), String.class);
         if (logoutResponse.getStatusCode().is2xxSuccessful()) {
-            logger.info("Successfulley logged out from Keycloak");
+            logger.info(builder.toUriString()+"\nSuccessfulley logged out from Keycloak user "+logoutResponse.getBody());
+            SecurityContextHolder.getContext().setAuthentication(null);
         } else {
             logger.error("Could not propagate logout to Keycloak");
         }
