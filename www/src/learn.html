@@ -4,8 +4,16 @@
 <head>
     <link rel="stylesheet" href="dark.css">
     <link rel="stylesheet" href="layout.css">
+    <script type="text/javascript" src="session.js"></script>
 
     <script>
+        loadUser()
+        .then((response) => response.json())
+        .then((data) => {
+            alert(JSON.stringify(data));
+        })
+
+
         function init(){
             fetch('art-template.html')
             .then((response) => response.text())
@@ -48,7 +56,7 @@
         <div id="rightSideButtons">
             <button class="butt b-secondary">+ New</button>
             <button class="butt b-primary">Start repetition</button>
-            <button class="butt b-secondary">Logout</button>
+            <button class="butt b-secondary" onclick="logout()">Logout</button>
         </div>
     </nav>
     <div id="content-b">

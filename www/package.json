@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "web-dev-server --node-resolve --open --watch"
+    "start": "web-dev-server --config web-dev-server.config.mjs --node-resolve --open --rootDir ./src/ --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@web/dev-server": "^0.1.36"
+    "@web/dev-server": "^0.1.37",
+    "koa-proxies": "^0.12.3"
+  },
+  "dependencies": {
+    "@web/rollup-plugin-html": "^1.11.0"
   }
 }

@@ -1,4 +1,4 @@
-package com.wuza8.konnichiwoo;
+package com.wuza8.konnichiwoo.security;
 
 import java.util.Collection;
 import java.util.HashSet;
