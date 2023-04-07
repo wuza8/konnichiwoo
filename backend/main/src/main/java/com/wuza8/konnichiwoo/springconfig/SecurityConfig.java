@@ -1,4 +1,4 @@
-package com.wuza8.konnichiwoo.security;
+package com.wuza8.konnichiwoo.springconfig;
 
 import java.util.Collection;
 import java.util.HashSet;

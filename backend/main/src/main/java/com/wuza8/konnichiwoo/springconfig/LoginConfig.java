@@ -1,4 +1,4 @@
-package com.wuza8.konnichiwoo.security;
+package com.wuza8.konnichiwoo.springconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import lombok.Getter;
 
 @Configuration
-public class LoginConfig {
+class LoginConfig {
     @Autowired
     @Getter
     @Value("${login.afterLoginRedirectUri}")

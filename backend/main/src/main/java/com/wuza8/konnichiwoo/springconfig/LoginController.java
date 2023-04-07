@@ -1,4 +1,4 @@
-package com.wuza8.konnichiwoo.security;
+package com.wuza8.konnichiwoo.springconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,7 +14,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api")
-public class LoginEndpoints {
+class LoginController {
 
     @Autowired
     private LoginConfig loginConfig;
