@@ -3,7 +3,6 @@ package com.wuza8.konnichiwoo.language;
 import com.wuza8.konnichiwoo.language.dto.LanguageAddDto;
 import com.wuza8.konnichiwoo.language.dto.LanguageDto;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,7 +12,6 @@ import java.util.List;
  *  languages in the app. At this point there's only japanese language
  *  harcoded - see LanguageConfig
  */
-@Service
 @AllArgsConstructor
 public class LanguageFacade {
     private LanguageService languageService;

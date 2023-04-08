@@ -23,6 +23,7 @@
         }
 
         words = [];
+        gameplayId = 0;
         register = [];
         done = [];
         repetitionSteps = ["ShowNewWords", "Repeat"];
@@ -36,11 +37,33 @@
         answerForm = 0;
 
         function init(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/api/gameplay/start", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                artId: 5
+            }));
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    gameplayId = data.gameplayId;
+                    words = data.toRepeat;
+                    onDataLoad();
+
+                    // we get the returned data
+                }
+
+                // end of state change: it can be after some time (async)
+            };
+
+
             fetch('repeat.json')
             .then((response) => response.json())
             .then((data) => {
-                words = data.toRepeat;
-                onDataLoad();
+                
             })
         }
 
@@ -97,7 +120,7 @@
                 buttIdk.style.display="none";
                 buttCheck.style.display="none";
                 buttOk.style.display="inline-block";
-                repetitionCaption.innerHTML = test.word.otherWriteForms[0] + " = " + test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[0];
+                repetitionCaption.innerHTML = test.word.goodWriteAnswers[0] + " = " + test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[0];
             }
             else {
                 repetitionAnswer.style.display="block";
@@ -109,7 +132,7 @@
                 else if(test.testType == TestType.EngToJapan)
                     repetitionCaption.innerHTML = test.word.goodAnswers[0];
                 else if(test.testType == TestType.RealWriting)
-                    repetitionCaption.innerHTML = test.word.otherWriteForms[0];
+                    repetitionCaption.innerHTML = test.word.goodWriteAnswers[0];
             }
 
 
