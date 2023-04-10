@@ -33,10 +33,10 @@ class ArtsService {
                 }
             }
         }
-        List<ArtPartDto> parts = new ArrayList<>();
+        List<ArtPart> parts = new ArrayList<>();
 
         for(ArtPartAddDto part : artAddDto.artParts){
-            parts.add(ArtPartDto.builder().subtitle(part.subtitle).sentences(part.sentences).build());
+            parts.add(ArtPart.builder().subtitle(part.subtitle).sentences(part.sentences).build());
         }
 
 
@@ -47,7 +47,7 @@ class ArtsService {
                 .originalAuthor(artAddDto.originalAuthor)
                 .artType(artAddDto.artType)
                 .artUrl(artAddDto.artUrl)
-                .artParts(createArtPartsString(parts))
+                .artParts(parts)
                 .build();
 
         return artsRepository.add(artEntity);
@@ -66,75 +66,15 @@ class ArtsService {
         return sentencesRepository.add(sentenceEntity);
     }
 
-    //TODO: Very risky function!
-    private String createArtPartsString(List<ArtPartDto> artParts){
-        StringBuilder sb = new StringBuilder();
-        for(ArtPartDto part : artParts){
-            sb.append(part.subtitle);
-            sb.append("@");
-
-            for(Long id : part.sentences){
-                sb.append(id);
-                sb.append(" ");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
-    //TODO: Very risky function!
-    private List<ArtPartDto> artPartsStringToList(String artParts){
-        List<ArtPartDto> parts = new ArrayList<>();
-        String lines[] = artParts.split("\n");
-
-        for(String line : lines){
-            var newPart = ArtPartDto.builder();
-            List<Long> sentences = new ArrayList<>();
-            String nameSplit[] = line.split("@");
-            newPart.subtitle(nameSplit[0]);
-
-            String[] ids = nameSplit[1].split(" ");
-
-            for(String id : ids){
-                sentences.add(Long.parseLong(id));
-            }
-            newPart.sentences(sentences);
-            parts.add(newPart.build());
-        }
-
-        return parts;
-    }
-
     public List<ArtPreviewDto> getArtPreviews(ArtQueryDto textQueryDto) {
         return artsRepository.findPreviews(textQueryDto);
     }
 
-    public ArtDto getArt(Long artId){
-        ArtEntity entity = artsRepository.find(artId);
-        ArtDto result = ArtDto.builder()
-                .id(entity.getId())
-                .textName(entity.getTextName())
-                .languageId(entity.getLanguageId())
-                .memoAuthorUID(entity.getMemoAuthorUID())
-                .originalAuthor(entity.getOriginalAuthor())
-                .artType(entity.getArtType())
-                .artUrl(entity.getArtUrl())
-                .artParts(artPartsStringToList(entity.getArtParts()))
-                .build();
-
-        return result;
+    public ArtEntity getArt(Long artId){
+        return artsRepository.find(artId);
     }
 
-    public SentenceDto getSentence(Long id){
-        SentenceEntity entity = sentencesRepository.find(id);
-
-        return SentenceDto.builder()
-                .id(entity.getId())
-                .languageId(entity.getLanguageId())
-                .translation(entity.getTranslation())
-                .memoPictureURL(entity.getMemoPictureURL())
-                .goodForeignAnswers(entity.getGoodForeignAnswers())
-                .goodEnglishAnswers(entity.getGoodEnglishAnswers())
-                .build();
+    public SentenceEntity getSentence(Long id){
+        return sentencesRepository.find(id);
     }
 }

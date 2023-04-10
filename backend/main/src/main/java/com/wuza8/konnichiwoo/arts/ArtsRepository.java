@@ -8,7 +8,6 @@ import java.util.List;
 
 interface ArtsRepository {
     Long add(ArtEntity artEntity);
-
     ArtEntity find(Long artId);
     List<ArtPreviewDto> findPreviews(ArtQueryDto query);
 }

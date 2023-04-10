@@ -16,13 +16,12 @@ class ArtsController {
     private ArtsFacade facade;
 
     @PostMapping("add")
-    void addArt(@RequestBody ArtAddDto art){
+    private void addArt(@RequestBody ArtAddDto art){
         facade.addNewArt(art);
     }
 
     @PostMapping("search")
-    List<ArtPreviewDto> searchArtPreviews(@RequestBody ArtQueryDto query){
+    private List<ArtPreviewDto> searchArtPreviews(@RequestBody ArtQueryDto query){
         return facade.getArtPreviews(query);
     }
-
 }

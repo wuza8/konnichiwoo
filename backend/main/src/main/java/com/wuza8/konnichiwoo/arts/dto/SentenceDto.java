@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @Builder
 public class SentenceDto {
-    private Long id;
-    private Long languageId;
+    private long id;
+    private long languageId;
     private String translation;
     private String memoPictureURL;
     private List<String> goodForeignAnswers;

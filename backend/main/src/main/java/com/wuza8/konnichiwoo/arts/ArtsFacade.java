@@ -9,24 +9,8 @@ import java.util.List;
 public class ArtsFacade {
     private ArtsService artsService;
 
-    public void addNewSentence(SentenceAddDto sentenceAddDto) {
-
-    }
-
-    public void modifySentence(SentenceModifyDto sentenceModifyDto) {
-
-    }
-
-    public void removeSentence(Long sentenceId) {
-
-    }
-
     public Long addNewArt(ArtAddDto artAddDto) {
         return artsService.addNewArt(artAddDto);
-    }
-
-    public void removeArt(ArtAddDto textAddDto) {
-
     }
 
     public List<ArtPreviewDto> getArtPreviews(ArtQueryDto textQueryDto) {
@@ -34,10 +18,10 @@ public class ArtsFacade {
     }
 
     public ArtDto getArt(Long artId){
-        return artsService.getArt(artId);
+        return artsService.getArt(artId).createDto();
     }
 
     public SentenceDto getSentence(Long id){
-        return artsService.getSentence(id);
+        return artsService.getSentence(id).createDto();
     }
 }

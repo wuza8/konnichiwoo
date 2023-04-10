@@ -13,7 +13,6 @@ class ArtsTest {
 
     @Test
     public void addNewArt(){
-
         ArtAddDto newArt = ArtAddDto.builder()
                 .languageId(1L)
                 .textName("Bobi")
