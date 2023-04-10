@@ -1,20 +1,20 @@
 package com.wuza8.konnichiwoo.arts.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Id;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @Builder
-@NoArgsConstructor
-public class SentenceAddDto {
+public class SentenceDto {
+    private Long id;
     private Long languageId;
-    private String memoPictureURL;
     private String translation;
+    private String memoPictureURL;
     private List<String> goodForeignAnswers;
     private List<String> goodEnglishAnswers;
 }

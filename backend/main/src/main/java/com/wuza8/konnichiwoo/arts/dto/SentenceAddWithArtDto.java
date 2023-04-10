@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -11,6 +13,6 @@ public class SentenceAddWithArtDto {
     private Long partTimeId;
     private String memoPictureURL;
     private String translation;
-    private String goodForeignAnswers;
-    private String goodEnglishAnswers;
+    private List<String> goodForeignAnswers;
+    private List<String> goodEnglishAnswers;
 }

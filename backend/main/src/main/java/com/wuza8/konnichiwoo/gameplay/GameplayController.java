@@ -35,10 +35,8 @@ class GameplayController {
                 HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/omg", method = RequestMethod.POST)
-//    public ResponseEntity<String> persistPerson(@RequestBody GameplayRequest person) {
-//        ResponseEntity<String> bob = new ResponseEntity<String>("terrorist", HttpStatus.OK);
-//
-//        return bob;
-//    }
+    @PostMapping("end")
+    public void endRepetition(OAuth2AuthenticationToken token, @RequestBody GameplayResult gameplayResult){
+        gameplayFacade.endRepetition(token.getPrincipal().getAttribute("sub"), gameplayResult);
+    }
 }

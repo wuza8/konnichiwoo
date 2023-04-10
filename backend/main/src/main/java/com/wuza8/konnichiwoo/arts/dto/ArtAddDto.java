@@ -15,6 +15,6 @@ public class ArtAddDto {
     public String originalAuthor;
     public ArtType artType;
     public String artUrl;
-    public List<ArtPartDto> artParts;
+    public List<ArtPartAddDto> artParts;
     public List<SentenceAddWithArtDto> addedSentences;
 }

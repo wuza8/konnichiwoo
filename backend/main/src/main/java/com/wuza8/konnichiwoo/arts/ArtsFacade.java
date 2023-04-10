@@ -32,4 +32,12 @@ public class ArtsFacade {
     public List<ArtPreviewDto> getArtPreviews(ArtQueryDto textQueryDto) {
         return artsService.getArtPreviews(textQueryDto);
     }
+
+    public ArtDto getArt(Long artId){
+        return artsService.getArt(artId);
+    }
+
+    public SentenceDto getSentence(Long id){
+        return artsService.getSentence(id);
+    }
 }

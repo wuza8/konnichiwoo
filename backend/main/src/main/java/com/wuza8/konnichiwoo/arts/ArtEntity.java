@@ -1,7 +1,5 @@
 package com.wuza8.konnichiwoo.arts;
 
-import com.wuza8.konnichiwoo.arts.dto.ArtPartDto;
-import com.wuza8.konnichiwoo.arts.dto.SentenceAddWithArtDto;
 import com.wuza8.konnichiwoo.arts.enums.ArtType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @AllArgsConstructor

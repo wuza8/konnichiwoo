@@ -19,7 +19,11 @@ class InMemoryArtsRepository implements ArtsRepository{
         return artEntity.getId();
     }
 
-    public List<ArtPreviewDto> find(ArtQueryDto query){
+    public ArtEntity find(Long artId){
+        return arts.get(artId);
+    }
+
+    public List<ArtPreviewDto> findPreviews(ArtQueryDto query){
         List<ArtEntity> found = new ArrayList<>();
 
         for(ArtEntity art : arts.values()){
@@ -29,7 +33,6 @@ class InMemoryArtsRepository implements ArtsRepository{
         }
 
         List<ArtPreviewDto> previews = new ArrayList<>();
-
 
         for(ArtEntity art : found){
             previews.add(new ArtPreviewDto(art.getTextName()));

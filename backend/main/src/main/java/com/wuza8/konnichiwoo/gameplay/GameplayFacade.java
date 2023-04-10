@@ -11,10 +11,10 @@ public class GameplayFacade {
     private GameplayService gameplayService;
 
     public Gameplay getNewGame(String userId, GameplayRequest gameplayRequest) {
-        return null;
+        return gameplayService.getNewGame(userId, gameplayRequest);
     }
 
-    public void recordGame(GameplayResult gameplayResult) {
+    public void endRepetition(String userId, GameplayResult gameplayResult){
 
     }
 }

@@ -11,4 +11,8 @@ class InMemorySentencesRepository implements SentencesRepository{
         nextId++;
         return sentenceEntity.getId();
     }
+
+    public SentenceEntity find(Long id){
+        return sentences.get(id);
+    }
 }

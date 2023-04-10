@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity(name="sentences")
@@ -16,6 +18,6 @@ class SentenceEntity {
     private Long languageId;
     private String translation;
     private String memoPictureURL;
-    private String goodForeignAnswers;
-    private String goodEnglishAnswers;
+    private List<String> goodForeignAnswers;
+    private List<String> goodEnglishAnswers;
 }
