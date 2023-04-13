@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+
+<HTML>
+<head>
+    <link rel="stylesheet" href="dark.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="editor.css">
+    <script type="text/javascript" src="editortabs.js"></script>
+</head>
+
+<body>
+    <nav>
+        <img class="logo" src="logo.svg"></img>
+        
+        <input type="text" id="artname">
+
+        <ul>
+            <li class="tabs tabs-button-text">Text</li>
+            <li class="tabs tabs-button-words">Words</li>
+            <li class="tabs tabs-button-added">Added</li>
+            <li class="tabs tabs-button-metadata">Metadata</li>
+            <li class="tabs tabs-button-save">Save</li>
+        </ul>
+        <div id="rightSideButtons">
+            <a href="http://localhost:8081/api/login">
+                <button class="butt b-primary">Help</button>
+            </a>
+            <button class="butt b-secondary">Exit editing</button>
+        </div>
+    </nav>
+
+
+    <div class="content tabs tabs-default tabs-content-text">
+
+        <textarea placeholder="Write text to start" id="texttab-text" rows="40" cols="100"></textarea>
+        <div id="texttab-words"></div>
+
+    </div>
+    <div class="content tabs tabs-content-words">Words</div>
+    <div class="content tabs tabs-content-added">Added</div>
+    <div class="content tabs tabs-content-metadata">Metadata</div>
+    <div class="content tabs tabs-content-save">Save</div>
+</body>
+</HTML>
