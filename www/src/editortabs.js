@@ -2,7 +2,7 @@ switchedTo = ""
 buttons = {}
 tabs = {}
 
-function init() {
+function tabsinit() {
     let elements = document.getElementsByClassName('tabs');
     defaultName = ""
     Object.keys(elements)
@@ -42,7 +42,6 @@ function init() {
             }
         }
     });
-    console.log(tabs);
     switchTo(defaultName)
 };
 
@@ -76,32 +75,3 @@ function addClass(ele,cls) {
       ele.className=ele.className.replace(reg,' ');
     }
   }
-
-  /* bind body onload for Mozilla/Opera9 */
-//   if (document.addEventListener) {
-//     document.addEventListener("DOMContentLoaded", init, false);
-//   }
-  
-  /* bind body onload for Internet Explorer */
-  /*@cc_on @*/
-  /*@if (@_win32)
-    document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
-    var script = document.getElementById("__ie_onload");
-    script.onreadystatechange = function() {
-      if (this.readyState == "complete") {
-        init(); // call the onload handler
-      }
-    };
-  /*@end @*/
-  
-  /* bind body onload for Safari */
-//   if (/WebKit/i.test(navigator.userAgent)) { // sniff
-//     var _timer = setInterval(function() {
-//       if (/loaded|complete/.test(document.readyState)) {
-//         init(); // call the onload handler
-//       }
-//     }, 10);
-//   }
-  
-  /* bind body onload for other browsers */
-  window.onload = init;

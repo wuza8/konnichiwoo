@@ -9,6 +9,6 @@ class GameplayConfig {
 
     @Bean
     public GameplayFacade gameplayFacade(ArtsFacade artsFacade){
-        return new GameplayFacade(new GameplayService(artsFacade, new InMemoryPlayerRepetitionRecordRepositoryImpl()));
+        return new GameplayFacade(new GameplayService(artsFacade, new InMemoryPlayerRepetitionRecordRepositoryImpl(), new InMemoryPlayerGameplayHistoryRepository()));
     }
 }

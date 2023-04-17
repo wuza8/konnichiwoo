@@ -28,7 +28,6 @@ class ArtsTest {
                 ))
                 .addedSentences(new ArrayList<>(List.of(SentenceAddWithArtDto.builder()
                         .partTimeId(1L)
-                        .translation("hello")
                         .goodEnglishAnswers(new ArrayList<>(List.of("hello")))
                         .goodForeignAnswers(new ArrayList<>(List.of("konnichiwa")))
                         .memoPictureURL(null)
@@ -37,7 +36,7 @@ class ArtsTest {
 
         artsFacade.addNewArt(newArt);
 
-        List<ArtPreviewDto> arts = artsFacade.getArtPreviews(new ArtQueryDto("Bobi"));
+        List<ArtEntity> arts = artsFacade.searchArts(new ArtQueryDto("Bobi"));
 
         Assertions.assertEquals(1, arts.size());
     }

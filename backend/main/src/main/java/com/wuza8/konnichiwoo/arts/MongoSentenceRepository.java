@@ -1,4 +1,6 @@
 package com.wuza8.konnichiwoo.arts;
 
-class MongoSentenceRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+interface MongoSentenceRepository extends MongoRepository<SentenceEntity, String> {
 }

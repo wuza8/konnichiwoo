@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class GameplayRequest {
-    private Long artId;
+    private String artId;
     private Long numberOfToRepeat;
 }

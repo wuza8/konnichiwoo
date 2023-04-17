@@ -3,27 +3,24 @@ package com.wuza8.konnichiwoo.arts;
 import com.wuza8.konnichiwoo.arts.dto.ArtDto;
 import com.wuza8.konnichiwoo.arts.dto.ArtPartDto;
 import com.wuza8.konnichiwoo.arts.enums.ArtType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Document("art")
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-class ArtEntity {
+public class ArtEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private String id;
     private String textName;
     private Long languageId;
     private String memoAuthorUID;

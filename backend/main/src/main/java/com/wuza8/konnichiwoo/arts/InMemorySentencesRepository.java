@@ -3,16 +3,16 @@ package com.wuza8.konnichiwoo.arts;
 import java.util.concurrent.ConcurrentHashMap;
 
 class InMemorySentencesRepository implements SentencesRepository{
-    private ConcurrentHashMap<Long, SentenceEntity> sentences = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, SentenceEntity> sentences = new ConcurrentHashMap<>();
     private Long nextId = 1L;
-    public Long add(SentenceEntity sentenceEntity){
-        sentenceEntity.setId(nextId);
-        sentences.put(nextId, sentenceEntity);
+    public String add(SentenceEntity sentenceEntity){
+        sentenceEntity.setId(Long.toString(nextId));
+        sentences.put(Long.toString(nextId), sentenceEntity);
         nextId++;
         return sentenceEntity.getId();
     }
 
-    public SentenceEntity find(Long id){
+    public SentenceEntity find(String id){
         return sentences.get(id);
     }
 }

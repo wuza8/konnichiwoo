@@ -7,5 +7,5 @@ import java.util.List;
 @Builder
 public class ArtPartDto {
     public String subtitle;
-    public List<Long> sentences;
+    public List<String> sentences;
 }

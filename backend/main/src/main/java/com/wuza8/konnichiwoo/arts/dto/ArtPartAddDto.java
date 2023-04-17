@@ -7,6 +7,6 @@ import java.util.List;
 @Builder
 public class ArtPartAddDto {
     public String subtitle;
-    public List<Long> sentences;
+    public List<String> sentences;
     public List<Long> newUsedSentences;
 }

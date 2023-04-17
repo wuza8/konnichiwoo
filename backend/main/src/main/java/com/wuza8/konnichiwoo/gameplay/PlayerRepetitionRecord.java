@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 class PlayerRepetitionRecord {
     private String userId;
-    private Long wordId;
+    private String wordId;
     private Short relativeKnowledge;
     private LocalDateTime lastLearning;
 }

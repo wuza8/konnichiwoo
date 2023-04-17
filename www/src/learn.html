@@ -7,10 +7,11 @@
     <script type="text/javascript" src="session.js"></script>
 
     <script>
+        template = null;
         loadUser()
         .then((response) => response.json())
         .then((data) => {
-            alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
         })
 
 
@@ -18,33 +19,89 @@
             fetch('art-template.html')
             .then((response) => response.text())
             .then((data) => loadArts(data));
+
+            var searchForm = document.querySelector("#search-form");
+            
+            function handleSearchForm(e) {
+                e.preventDefault();
+                let searchString = e.explicitOriginalTarget["name"].value;
+
+                if(searchString!=="")
+                    sendSearch(searchString)
+            };
+
+            searchForm.addEventListener('submit', handleSearchForm);
         }
         
-        function loadArts(template) {
-            fetch('history.json')
+        function loadArts(templat) {
+            template = templat;
+            fetch('/api/gameplay/history')
             .then((response) => response.json())
             .then((data) => {
-                data.history.forEach(h => {
+                data.forEach(h => {
                     code = new String(template);
-
-                    code = code.replaceAll("{{title}}", h.title);
-                    code = code.replaceAll("{{type}}", h.type);
+                    
+                    code = code.replaceAll("{{id}}", h.id);
+                    code = code.replaceAll("{{title}}", h.name);
+                    code = code.replaceAll("{{type}}", h.artType);
                     code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
                     code = code.replaceAll("{{progressPercent}}", h.progress);
                     code = code.replaceAll("{{mapper}}", h.mapper);
                     code = code.replaceAll("{{thumbs}}", h.thumbs);
-                    code = code.replaceAll("{{progressPercent}}", h.progress);
 
                     document.getElementById("history-art-place").innerHTML += code;
                 });
             })
         }
 
-        init();
+        function sendSearch(searchName){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                name: searchName
+            }));
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    loadSearch(data);
+                }
+            };
+
+        }
+
+        function loadSearch(data){
+            let place = document.getElementById("search-art-place");
+            place.innerHTML="";
+            data.forEach(h => {
+                code = new String(template);
+
+                code = code.replaceAll("{{id}}", h.id);
+                code = code.replaceAll("{{title}}", h.name);
+                code = code.replaceAll("{{type}}", h.type);
+                code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
+                code = code.replaceAll("{{progressPercent}}", h.progress);
+                code = code.replaceAll("{{mapper}}", h.mapper);
+                code = code.replaceAll("{{thumbs}}", h.thumbs);
+
+                place.innerHTML += code;
+            });
+        }
+
+        function startRepetition(id){
+            localStorage.setItem("lastRepetitionId", id);
+            console.log(id);
+            window.location="/repetition.html";
+        }
+
+        
     </script>
 </head>
 
-<body>
+<body onload="init()">
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
@@ -71,6 +128,12 @@
         <div class="selection-bar">Find new stuff
             <div class="selection-bar-end" style="width: calc(100% - 152px);"></div>
         </div>
+
+        <form id="search-form">
+            <input type="text" placeholder="search" name="name"> <input type="submit" value="Search">
+        </form>
+
+        <span id="search-art-place"></span>
     </div>
 </body>
 </HTML>

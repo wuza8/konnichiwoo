@@ -12,7 +12,6 @@ import java.util.List;
 public class SentenceAddWithArtDto {
     private Long partTimeId;
     private String memoPictureURL;
-    private String translation;
     private List<String> goodForeignAnswers;
     private List<String> goodEnglishAnswers;
 }

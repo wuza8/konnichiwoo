@@ -12,19 +12,18 @@ class ArtsService {
     private ArtsRepository artsRepository;
     private SentencesRepository sentencesRepository;
 
-    public Long addNewArt(ArtAddDto artAddDto) {
+    public String addNewArt(ArtAddDto artAddDto) {
 
         //Firstly we add new sentences
         for(SentenceAddWithArtDto newSentence : artAddDto.addedSentences){
             SentenceAddDto sentenceAddDto = new SentenceAddDto();
 
             sentenceAddDto.setLanguageId(artAddDto.languageId);
-            sentenceAddDto.setTranslation(newSentence.getTranslation());
             sentenceAddDto.setGoodEnglishAnswers(newSentence.getGoodEnglishAnswers());
             sentenceAddDto.setGoodForeignAnswers(newSentence.getGoodForeignAnswers());
             sentenceAddDto.setMemoPictureURL(newSentence.getMemoPictureURL());
 
-            Long newId = addNewSentence(sentenceAddDto);
+            String newId = addNewSentence(sentenceAddDto);
 
             //We find parts that use this sentence
             for(ArtPartAddDto part : artAddDto.artParts){
@@ -36,14 +35,14 @@ class ArtsService {
         List<ArtPart> parts = new ArrayList<>();
 
         for(ArtPartAddDto part : artAddDto.artParts){
-            parts.add(ArtPart.builder().subtitle(part.subtitle).sentences(part.sentences).build());
+            parts.add(ArtPart.builder().subtitle(part.subtitle)
+                    .sentences(part.sentences).build());
         }
 
 
         ArtEntity artEntity = ArtEntity.builder()
                 .textName(artAddDto.textName)
                 .languageId(artAddDto.languageId)
-                .memoAuthorUID(artAddDto.memoAuthorUID)
                 .originalAuthor(artAddDto.originalAuthor)
                 .artType(artAddDto.artType)
                 .artUrl(artAddDto.artUrl)
@@ -53,7 +52,7 @@ class ArtsService {
         return artsRepository.add(artEntity);
     }
 
-    public Long addNewSentence(SentenceAddDto sentenceAddDto){
+    public String addNewSentence(SentenceAddDto sentenceAddDto){
         SentenceEntity sentenceEntity = SentenceEntity.builder()
                 .id(null)
                 .languageId(sentenceAddDto.getLanguageId())
@@ -66,15 +65,15 @@ class ArtsService {
         return sentencesRepository.add(sentenceEntity);
     }
 
-    public List<ArtPreviewDto> getArtPreviews(ArtQueryDto textQueryDto) {
-        return artsRepository.findPreviews(textQueryDto);
+    public List<ArtEntity> searchArts(ArtQueryDto textQueryDto) {
+        return artsRepository.findArts(textQueryDto);
     }
 
-    public ArtEntity getArt(Long artId){
+    public ArtEntity getArt(String artId){
         return artsRepository.find(artId);
     }
 
-    public SentenceEntity getSentence(Long id){
+    public SentenceEntity getSentence(String id){
         return sentencesRepository.find(id);
     }
 }

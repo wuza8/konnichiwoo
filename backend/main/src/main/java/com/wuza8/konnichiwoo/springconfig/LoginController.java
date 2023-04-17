@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 class LoginController {
 
     @Autowired

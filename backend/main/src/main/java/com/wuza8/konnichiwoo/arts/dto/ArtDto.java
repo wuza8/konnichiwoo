@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @Builder
 public class ArtDto {
-    private Long id;
+    private String id;
     private String textName;
     private Long languageId;
     private String memoAuthorUID;

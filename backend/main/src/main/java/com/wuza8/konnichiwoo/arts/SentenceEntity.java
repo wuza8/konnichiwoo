@@ -6,17 +6,18 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity(name="sentences")
+@Document("sentence")
 @Builder
 class SentenceEntity {
     @Id
-    private Long id;
+    private String id;
     private Long languageId;
     private String translation;
     private String memoPictureURL;

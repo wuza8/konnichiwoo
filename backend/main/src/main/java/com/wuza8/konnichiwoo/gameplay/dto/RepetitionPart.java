@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @Builder
 public class RepetitionPart {
-    private Long wordId;
+    private String wordId;
     private List<String> goodAnswers;
     private List<String> goodWriteAnswers;
     private Boolean isNew;

@@ -9,19 +9,19 @@ import java.util.List;
 public class ArtsFacade {
     private ArtsService artsService;
 
-    public Long addNewArt(ArtAddDto artAddDto) {
+    public String addNewArt(ArtAddDto artAddDto) {
         return artsService.addNewArt(artAddDto);
     }
 
-    public List<ArtPreviewDto> getArtPreviews(ArtQueryDto textQueryDto) {
-        return artsService.getArtPreviews(textQueryDto);
+    public List<ArtEntity> searchArts(ArtQueryDto textQueryDto) {
+        return artsService.searchArts(textQueryDto);
     }
 
-    public ArtDto getArt(Long artId){
+    public ArtDto getArt(String artId){
         return artsService.getArt(artId).createDto();
     }
 
-    public SentenceDto getSentence(Long id){
+    public SentenceDto getSentence(String id){
         return artsService.getSentence(id).createDto();
     }
 }

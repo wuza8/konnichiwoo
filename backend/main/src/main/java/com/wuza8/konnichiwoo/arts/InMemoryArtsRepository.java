@@ -9,21 +9,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class InMemoryArtsRepository implements ArtsRepository{
 
-    private ConcurrentHashMap<Long, ArtEntity> arts = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, ArtEntity> arts = new ConcurrentHashMap<>();
     private Long nextId = 1L;
 
-    public Long add(ArtEntity artEntity){
-        artEntity.setId(nextId);
-        arts.put(nextId, artEntity);
+    public String add(ArtEntity artEntity){
+        artEntity.setId(Long.toString(nextId));
+        arts.put(Long.toString(nextId), artEntity);
         nextId++;
         return artEntity.getId();
     }
 
-    public ArtEntity find(Long artId){
+    public ArtEntity find(String artId){
         return arts.get(artId);
     }
 
-    public List<ArtPreviewDto> findPreviews(ArtQueryDto query){
+    public List<ArtEntity> findArts(ArtQueryDto query){
         List<ArtEntity> found = new ArrayList<>();
 
         for(ArtEntity art : arts.values()){
@@ -32,13 +32,7 @@ class InMemoryArtsRepository implements ArtsRepository{
             }
         }
 
-        List<ArtPreviewDto> previews = new ArrayList<>();
-
-        for(ArtEntity art : found){
-            previews.add(new ArtPreviewDto(art.getTextName()));
-        }
-
-        return previews;
+        return found;
     }
 
 }

@@ -11,7 +11,6 @@ import java.util.List;
 public class ArtAddDto {
     public String textName;
     public Long languageId;
-    public String memoAuthorUID;
     public String originalAuthor;
     public ArtType artType;
     public String artUrl;

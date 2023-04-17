@@ -37,11 +37,13 @@
         answerForm = 0;
 
         function init(){
+            let artIDE = localStorage.getItem("lastRepetitionId");
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/start", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
-                artId: 5
+                artId: artIDE,
+                numberOfToRepeat: 10
             }));
 
             xhr.onreadystatechange = function () {
@@ -120,7 +122,7 @@
                 buttIdk.style.display="none";
                 buttCheck.style.display="none";
                 buttOk.style.display="inline-block";
-                repetitionCaption.innerHTML = test.word.goodWriteAnswers[0] + " = " + test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[0];
+                repetitionCaption.innerHTML = test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[1] + " = " + test.word.goodAnswers[0];
             }
             else {
                 repetitionAnswer.style.display="block";
@@ -152,6 +154,9 @@
             isAnswerGood = false;
 
             if(test.testType == TestType.JapanToEng){
+                goodAnswers = test.word.goodAnswers;
+            }
+            else if(test.testType == TestType.RealWriting){
                 goodAnswers = test.word.goodAnswers;
             }
             else{
@@ -204,7 +209,7 @@
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
-            <li>End session</li>
+            <li><a href="learn.html">End session</a></li>
         </ul>
         <div id="rightSideButtons">
             <button class="butt b-secondary">Logout</button>

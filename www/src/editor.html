@@ -6,13 +6,32 @@
     <link rel="stylesheet" href="layout.css">
     <link rel="stylesheet" href="editor.css">
     <script type="text/javascript" src="editortabs.js"></script>
+    <script type="text/javascript" src="editor-logic.js"></script>
+    <script type="text/javascript" src="editor-wordextractor.js"></script>
+    <script type="text/javascript" src="editor-binds.js"></script>
+    <script type="text/javascript" src="editor-save.js"></script>
+
+    <script>
+        function onload(){
+            tabsinit();
+            var area = document.querySelector('#texttab-text');
+            var words = document.querySelector('#texttab-words');
+            if (area.addEventListener) {
+                area.addEventListener('input', function() {
+                    words.value = extractWords(area.value);
+                }, false);
+            }
+            bindInit();
+            initSave();
+        }
+    </script>
 </head>
 
-<body>
+<body onload="onload()">
     <nav>
         <img class="logo" src="logo.svg"></img>
         
-        <input type="text" id="artname">
+        <input class="ebind-textname" type="text" id="artname">
 
         <ul>
             <li class="tabs tabs-button-text">Text</li>
@@ -33,12 +52,53 @@
     <div class="content tabs tabs-default tabs-content-text">
 
         <textarea placeholder="Write text to start" id="texttab-text" rows="40" cols="100"></textarea>
-        <div id="texttab-words"></div>
+        <textarea id="texttab-words" readonly></textarea>
 
     </div>
     <div class="content tabs tabs-content-words">Words</div>
-    <div class="content tabs tabs-content-added">Added</div>
-    <div class="content tabs tabs-content-metadata">Metadata</div>
-    <div class="content tabs tabs-content-save">Save</div>
+    <div class="content tabs tabs-content-added">
+        <div class="added-wordlist">
+            <span id="added-wordlist-place">
+            </span>
+
+            <button class="added-add-word-button" onclick="artCreator.addNewSentence();recreateWordButtons()">+ Add new word</button>
+        </div>
+
+        <div class="added-word-editor">
+            <span id="added-word-editor-active">
+                <input id="added-word-editor-input-foreign-kanji" type="text" placeholder="foreign kanji writing"> <br>
+                <input id="added-word-editor-input-foreign-romaji" type="text" placeholder="foreign romaji writing"> <br>
+                <input id="added-word-editor-input-english" type="text" placeholder="english translation">
+                <input id="added-word-editor-input-memoimage" type="file" accept="image/jpeg, image/png, image/jpg">
+                <img id="added-word-editor-image-display">
+            </span>
+
+            <span id="added-word-editor-nonactive">
+                Select word from left to edit
+            </span>
+        </div>
+    </div>
+    <div class="content tabs tabs-content-metadata">
+        <div class="metadata-main">
+            <input id="metadata-originalauthor" type="text" placeholder="Original author name"> <br>
+            <select id="metadata-arttype" placeholder="art type">
+                <option value="">select arttype</option>
+                <option value="music">Music</option>
+            </select>
+            <br>
+            <input id="metadata-arturl" type="text" placeholder="Link to art"> <br>
+        </div>
+
+
+    </div>
+    <div class="content tabs tabs-content-save">
+        <div id="save-main">
+            Save progress:
+            <input id="save-new-save-name-input" type="text"><button id="save-new-save-submit" onclick="saveNew()"> Save </button><br>
+
+            Saved progresses:
+            <span id="save-saved-place"></span>
+        </div>
+    </div>
 </body>
 </HTML>

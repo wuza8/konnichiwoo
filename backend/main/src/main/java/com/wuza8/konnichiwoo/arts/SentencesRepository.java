@@ -1,7 +1,7 @@
 package com.wuza8.konnichiwoo.arts;
 
 interface SentencesRepository {
-    Long add(SentenceEntity sentenceEntity);
-    SentenceEntity find(Long id);
+    String add(SentenceEntity sentenceEntity);
+    SentenceEntity find(String id);
 
 }
