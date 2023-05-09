@@ -14,4 +14,9 @@ class InMemoryPlayerRepetitionRecordRepositoryImpl implements PlayerRepetitionRe
         }
         return playerRecords;
     }
+
+    @Override
+    public void addPlayerRecord(PlayerRepetitionRecord record){
+        records.add(record);
+    }
 }

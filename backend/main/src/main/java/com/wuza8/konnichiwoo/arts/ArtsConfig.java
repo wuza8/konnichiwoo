@@ -12,7 +12,7 @@ public class ArtsConfig {
     @Autowired
     private MongoSentenceRepository sentenceRepository;
     @Bean
-    public ArtsFacade artsFacade(){
+    public ArtsFacade artsFacade() {
         return new ArtsFacade(new ArtsService(new MongoArtsRepositoryFacade(artsRepository)
                 , new MongoSentenceRepositoryFacade(sentenceRepository)));
     }

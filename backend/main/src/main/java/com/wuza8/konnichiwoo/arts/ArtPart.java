@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-class ArtPart {
+public class ArtPart {
     public String subtitle;
     public List<String> sentences;
 }

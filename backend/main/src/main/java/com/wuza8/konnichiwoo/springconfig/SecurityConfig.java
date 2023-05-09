@@ -46,7 +46,8 @@ class SecurityConfig {
                 .requestMatchers("/api/login")
                 .hasRole("USER")
                 .anyRequest()
-                .permitAll();
+                .permitAll()
+                .and().formLogin().disable();;
 
        http.oauth2Login()
                .and()

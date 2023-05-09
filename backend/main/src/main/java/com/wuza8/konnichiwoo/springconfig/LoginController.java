@@ -1,5 +1,7 @@
 package com.wuza8.konnichiwoo.springconfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -16,12 +18,19 @@ import java.security.Principal;
 @RequestMapping("")
 class LoginController {
 
+    private Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     private LoginConfig loginConfig;
 
     @Autowired
     private LogoutHandler logouter;
 
+    @GetMapping("")
+    public RedirectView meeen (Principal principal) {
+        if(principal == null)
+            return new RedirectView(loginConfig.getAfterLogoutRedirectUri());
+        return new RedirectView(loginConfig.getAfterLoginRedirectUri());
+    }
     @GetMapping("login")
     public RedirectView bober (Principal principal) {
         return new RedirectView(loginConfig.getAfterLoginRedirectUri());
@@ -29,7 +38,9 @@ class LoginController {
 
     @GetMapping("logout")
     public RedirectView logout(HttpServletRequest request, HttpServletResponse response, Authentication auth){
-        logouter.logout(request,response,auth);
+        logger.info("$",auth != null);
+        if(auth != null)
+            logouter.logout(request,response,auth);
         return new RedirectView(loginConfig.getAfterLogoutRedirectUri());
     }
 }

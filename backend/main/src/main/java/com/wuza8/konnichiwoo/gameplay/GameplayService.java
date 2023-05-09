@@ -66,13 +66,14 @@ class GameplayService {
     public List<ArtPreviewDto> searchForArt(String userId, ArtQueryDto query){
         List<ArtPreviewDto> artPreviews = new ArrayList<>();
         List<ArtEntity> arts = artsFacade.searchArts(query);
+        List<PlayerRepetitionRecord> records = playerRecords.getPlayerRecords(userId);
 
         for(ArtEntity art : arts){
             ArtPreviewDto preview = new ArtPreviewDto();
             preview.setId(art.getId());
             preview.setName(art.getTextName());
             preview.setThumbs(69L);
-            preview.setProgress(40L);
+            preview.setProgress(calculateProgress(art.getArtParts().get(0).getSentences(), records));
             artPreviews.add(preview);
         }
 
@@ -81,6 +82,7 @@ class GameplayService {
 
     public List<ArtPreviewDto> getGameplayHistory(String userId) {
         List<String> gameplayHistory = playerGameplayHistory.getLastPlayed(userId);
+        List<PlayerRepetitionRecord> records = playerRecords.getPlayerRecords(userId);
         List<ArtPreviewDto> artPreviews = new ArrayList<>();
 
         for(String l : gameplayHistory){
@@ -90,10 +92,27 @@ class GameplayService {
             preview.setId(art.getId());
             preview.setName(art.getTextName());
             preview.setThumbs(69L);
-            preview.setProgress(40L);
+            preview.setProgress(calculateProgress(art.getArtParts().get(0).sentences, records));
             artPreviews.add(preview);
         }
 
         return artPreviews;
+    }
+
+    private Long calculateProgress(List<String> sentences, List<PlayerRepetitionRecord> records){
+        Long points = 0L;
+
+        for(String sentence : sentences){
+            PlayerRepetitionRecord rec = null;
+            for(PlayerRepetitionRecord record : records){
+                if(record.getWordId().equals(sentence)){
+                    rec = record;
+                    break;
+                }
+            }
+            if(rec != null) points++;
+        }
+
+        return (long) (((float)points/ (float) sentences.size()) * 100.0);
     }
 }
