@@ -79,6 +79,8 @@ function rebindWordEditor(){
         return;
     }
 
+    document.querySelector("#romajidesu-button").href = "https://www.romajidesu.com/dictionary/meaning-of-"+clickedWord.goodForeignAnswers[0]+".html";
+
     wordEditor.style.display="inline-block";
     noSelectedWordEditorErrorElement.style.display="none";
     

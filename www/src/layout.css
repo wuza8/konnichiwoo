@@ -263,3 +263,47 @@ h1{
 #search-form{
     margin-bottom: 15px;
 }
+
+#top-usericon{
+    width:46px;
+    height:46px;
+    background-color: gray;
+    border-radius: 23px;
+    float:right;
+    margin-left: 10px;
+}
+
+#top-usericon:hover{
+    background-color: #444;
+    cursor: pointer;
+}
+
+#flux-userlist{
+    position: absolute;
+    right: 50px;
+    top: 75px;
+    width: 200px;
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.flux-userlist-button{
+    background-color: gray;
+    height: 50px;
+    width: 200px;
+    text-align: center;
+    line-height: 48px;
+    font-size:20px;
+    color: white;
+}
+
+.flux-userlist-button:hover{
+    background-color: #444;
+    cursor: pointer;
+}
+#flux-userlist-user{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 5px;
+    color: #ccc;
+}

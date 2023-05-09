@@ -43,7 +43,7 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 artId: artIDE,
-                numberOfToRepeat: 10
+                numberOfToRepeat: 3
             }));
 
             xhr.onreadystatechange = function () {
@@ -198,6 +198,9 @@
         function endGame(){
             document.getElementById("repetition-main").style.display="none";
             document.getElementById("repetition-results").style.display="block";
+
+
+            
         }
 
         init();

@@ -11,11 +11,24 @@
         loadUser()
         .then((response) => response.json())
         .then((data) => {
-            //alert(JSON.stringify(data));
+            let user = data;
+            document.querySelector("#flux-userlist-user").innerHTML = user.username;
         })
 
 
         function init(){
+            document.querySelector("#top-usericon").onclick=function(){
+                userlist = document.querySelector("#flux-userlist");
+
+                if(userlist.style.display == "none"){
+                    userlist.style.display = "block";
+                }
+                else{
+                    userlist.style.display = "none";
+                }
+            }
+
+
             fetch('art-template.html')
             .then((response) => response.text())
             .then((data) => loadArts(data));
@@ -111,11 +124,23 @@
             <li>Settings</li>
         </ul>
         <div id="rightSideButtons">
-            <button class="butt b-secondary">+ New</button>
+            <a href="editor.html"><button class="butt b-secondary">+ New</button></a>
             <button class="butt b-primary">Start repetition</button>
-            <button class="butt b-secondary" onclick="logout()">Logout</button>
+            <div id="top-usericon"></div>
+            <!-- <button class="butt b-secondary" onclick="logout()">Logout</button> -->
         </div>
     </nav>
+    <div id="flux-userlist" style="display: none">
+        <div id="flux-userlist-user">
+            
+        </div>
+        <div class="flux-userlist-button">
+            Profile
+        </div>
+        <div onclick="logout()" class="flux-userlist-button">
+            Logout
+        </div>
+    </div>
     <div id="content-b">
         <div class="selection-bar">Continue learning
             <div class="selection-bar-end"></div>

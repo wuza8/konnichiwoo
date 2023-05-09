@@ -21,8 +21,21 @@
                     words.value = extractWords(area.value);
                 }, false);
             }
+
+            
             bindInit();
             initSave();
+        }
+
+        function sendToWords(){
+            text = document.querySelector("#texttab-words").value;
+            words = extractWords(text)[0].split(",");
+
+            words.forEach(word => {
+                artCreator.addNewSentence(word);
+            });
+
+            recreateWordButtons();
         }
     </script>
 </head>
@@ -53,6 +66,7 @@
 
         <textarea placeholder="Write text to start" id="texttab-text" rows="40" cols="100"></textarea>
         <textarea id="texttab-words" readonly></textarea>
+        <button onclick="sendToWords()">Send to words</button>
 
     </div>
     <div class="content tabs tabs-content-words">Words</div>
@@ -66,7 +80,7 @@
 
         <div class="added-word-editor">
             <span id="added-word-editor-active">
-                <input id="added-word-editor-input-foreign-kanji" type="text" placeholder="foreign kanji writing"> <br>
+                <input id="added-word-editor-input-foreign-kanji" type="text" placeholder="foreign kanji writing"> <a target="_blank" id="romajidesu-button"><button> Open romajidesu in new tab</button></a> </button> <br>
                 <input id="added-word-editor-input-foreign-romaji" type="text" placeholder="foreign romaji writing"> <br>
                 <input id="added-word-editor-input-english" type="text" placeholder="english translation">
                 <input id="added-word-editor-input-memoimage" type="file" accept="image/jpeg, image/png, image/jpg">

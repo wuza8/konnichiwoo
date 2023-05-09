@@ -7,6 +7,13 @@ const ArtCreator = class {
         this.nextId++;
     }
 
+    addNewSentence(romaji){
+        let dto = this.SentenceAddWithArtDto(this.nextId);
+        dto.goodForeignAnswers = [romaji];
+        this.creation.addedSentences.push(dto);
+        this.nextId++;
+    }
+
     CreateArtAddDto(){
         let obj = Object();
         obj["textName"] = "untitled";
@@ -38,3 +45,4 @@ const ArtCreator = class {
 };
 
 artCreator = new ArtCreator();
+

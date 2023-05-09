@@ -19,3 +19,4 @@ function extractWords(text){
 
     return goodwords;
 }
+
