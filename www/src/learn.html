@@ -118,14 +118,13 @@
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
-            <li>Learn</li>
-            <li>Forum</li>
-            <li>My profile</li>
+            <li onclick='window.location="learn.html"'>Learn</li>
+            <li onclick='window.location="progress.html"'>My progress</li>
             <li>Settings</li>
         </ul>
         <div id="rightSideButtons">
-            <a href="editor.html"><button class="butt b-secondary">+ New</button></a>
-            <button class="butt b-primary">Start repetition</button>
+            <a id="new-button" href="editor.html">+ New</a>
+            <!-- <button class="butt b-primary">Start repetition</button> -->
             <div id="top-usericon"></div>
             <!-- <button class="butt b-secondary" onclick="logout()">Logout</button> -->
         </div>
@@ -147,7 +146,7 @@
         </div>
         <span id="history-art-place"></span>
         <div class="button-history-place">
-            <button class="butt b-secondary button-history">Show all history</button>
+            <!-- <button class="butt b-secondary button-history">Show all history</button> -->
         </div>
 
         <div class="selection-bar">Find new stuff

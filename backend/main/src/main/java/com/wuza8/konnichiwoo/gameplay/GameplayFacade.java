@@ -19,7 +19,7 @@ public class GameplayFacade {
     }
 
     public void endRepetition(String userId, GameplayResult gameplayResult){
-
+        gameplayService.endRepetition(userId, gameplayResult);
     }
 
     public List<ArtPreviewDto> searchForArt(String userId, ArtQueryDto query){

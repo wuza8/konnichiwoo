@@ -7,27 +7,28 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 class InMemoryPlayerGameplayHistoryRepository implements PlayerGameplayHistoryRepository{
-    private ConcurrentHashMap<String, Set<String>> history = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, ArtHistoryEntity> history = new ConcurrentHashMap<>();
 
     public void addHistory(String userId, String artId){
-        Set<String> hist = history.get(userId);
+        ArtHistoryEntity hist = history.get(userId);
 
         if(hist == null){
-            hist = new HashSet<>();
+            hist = new ArtHistoryEntity(userId, new ArrayList<String>());
             history.put(userId, hist);
         }
-
-        hist.add(artId);
+        hist.getArtIds().add(artId);
+        history.put(userId, hist);
     }
 
-    public List<String> getLastPlayed(String userId){
-        Set<String> hist = history.get(userId);
-
-        if(hist == null){
-            return new ArrayList<>();
-        }
-        else{
-            return hist.stream().toList();
-        }
+    public ArtHistoryEntity getLastPlayed(String userId){
+//        Set<ArtHistoryEntity> hist = history.get(userId);
+//
+//        if(hist == null){
+//            return new ArrayList<>();
+//        }
+//        else{
+//            return hist.stream().toList();
+//        }
+        return null;
     }
 }

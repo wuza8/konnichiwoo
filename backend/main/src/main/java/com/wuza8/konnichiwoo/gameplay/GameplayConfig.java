@@ -8,7 +8,11 @@ import org.springframework.context.annotation.Configuration;
 class GameplayConfig {
 
     @Bean
-    public GameplayFacade gameplayFacade(ArtsFacade artsFacade){
-        return new GameplayFacade(new GameplayService(artsFacade, new InMemoryPlayerRepetitionRecordRepositoryImpl(), new InMemoryPlayerGameplayHistoryRepository()));
+    public GameplayFacade gameplayFacade(ArtsFacade artsFacade, MongoPlayerGameplayHistory gameplayHistory, MongoPlayerRepetitionRecordRepository repetitionRecordRepository){
+        return new GameplayFacade(
+                new GameplayService(artsFacade,
+                        new MongoAdapterPlayerRepetitionRecordRepository(repetitionRecordRepository),
+                        new MongoAdapterPlayerGameplayHistoryRepository(gameplayHistory)
+                        ));
     }
 }

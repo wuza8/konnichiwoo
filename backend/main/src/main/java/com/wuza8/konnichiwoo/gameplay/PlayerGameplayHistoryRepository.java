@@ -4,5 +4,5 @@ import java.util.List;
 
 interface PlayerGameplayHistoryRepository {
     void addHistory(String userId, String artId);
-    List<String> getLastPlayed(String userId);
+    ArtHistoryEntity getLastPlayed(String userId);
 }

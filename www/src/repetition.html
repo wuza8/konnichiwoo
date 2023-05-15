@@ -36,8 +36,14 @@
 
         answerForm = 0;
 
+        repetitionResult = {
+            gameplayId: 1,
+            result: []
+        }
+
         function init(){
             let artIDE = localStorage.getItem("lastRepetitionId");
+            
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/start", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -184,6 +190,27 @@
                 repetitionCaption.style.background="#646262";
             }, 1000);
 
+            found = false;
+
+            console.log(JSON.stringify(test));
+
+            repetitionResult.result.forEach(res => {
+                if(res.wordId == test.word.wordId){
+                    if(!isAnswerGood){
+                        res.failedTimes++;
+                    }
+                    found = true;
+                }
+            });
+
+            if(!found){
+                repetitionResult.result.push({
+                    wordId: test.word.wordId,
+                    failedTimes: (isAnswerGood ? 0 : 1)
+                })
+            }
+
+
             loadNextTest();
         }
 
@@ -198,9 +225,12 @@
         function endGame(){
             document.getElementById("repetition-main").style.display="none";
             document.getElementById("repetition-results").style.display="block";
-
-
+            document.getElementById("repetition-results").innerHTML = JSON.stringify(repetitionResult);
             
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/api/gameplay/end", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(repetitionResult));
         }
 
         init();
