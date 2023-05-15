@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+
+<HTML>
+<head>
+    <link rel="stylesheet" href="dark.css">
+    <link rel="stylesheet" href="layout.css">
+    <script type="text/javascript" src="session.js"></script>
+
+    <script>
+        template = null;
+        loadUser()
+        .then((response) => response.json())
+        .then((data) => {
+            let user = data;
+            document.querySelector("#flux-userlist-user").innerHTML = user.username;
+        })
+
+
+        function init(){
+            document.querySelector("#top-usericon").onclick=function(){
+                userlist = document.querySelector("#flux-userlist");
+
+                if(userlist.style.display == "none"){
+                    userlist.style.display = "block";
+                }
+                else{
+                    userlist.style.display = "none";
+                }
+            }
+
+
+            fetch('art-template.html')
+            .then((response) => response.text())
+            .then((data) => loadArts(data));
+
+            var searchForm = document.querySelector("#search-form");
+            
+            function handleSearchForm(e) {
+                e.preventDefault();
+                let searchString = e.explicitOriginalTarget["name"].value;
+
+                if(searchString!=="")
+                    sendSearch(searchString)
+            };
+
+            searchForm.addEventListener('submit', handleSearchForm);
+        }
+        
+        function loadArts(templat) {
+            template = templat;
+            fetch('/api/gameplay/history')
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach(h => {
+                    code = new String(template);
+                    
+                    code = code.replaceAll("{{id}}", h.id);
+                    code = code.replaceAll("{{title}}", h.name);
+                    code = code.replaceAll("{{type}}", h.artType);
+                    code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
+                    code = code.replaceAll("{{progressPercent}}", h.progress);
+                    code = code.replaceAll("{{mapper}}", h.mapper);
+                    code = code.replaceAll("{{thumbs}}", h.thumbs);
+
+                    document.getElementById("history-art-place").innerHTML += code;
+                });
+            })
+        }
+
+        function sendSearch(searchName){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                name: searchName
+            }));
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    loadSearch(data);
+                }
+            };
+
+        }
+
+        function loadSearch(data){
+            let place = document.getElementById("search-art-place");
+            place.innerHTML="";
+            data.forEach(h => {
+                code = new String(template);
+
+                code = code.replaceAll("{{id}}", h.id);
+                code = code.replaceAll("{{title}}", h.name);
+                code = code.replaceAll("{{type}}", h.type);
+                code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
+                code = code.replaceAll("{{progressPercent}}", h.progress);
+                code = code.replaceAll("{{mapper}}", h.mapper);
+                code = code.replaceAll("{{thumbs}}", h.thumbs);
+
+                place.innerHTML += code;
+            });
+        }
+
+        function startRepetition(id){
+            localStorage.setItem("lastRepetitionId", id);
+            console.log(id);
+            window.location="/repetition.html";
+        }
+
+        
+    </script>
+</head>
+
+<body onload="init()">
+    <nav>
+        <img class="logo" src="logo.svg"></img>
+        <ul>
+            <li onclick='window.location="learn.html"'>Learn</li>
+            <li onclick='window.location="progress.html"'>My progress</li>
+            <li>Settings</li>
+        </ul>
+        <div id="rightSideButtons">
+            <a id="new-button" href="editor.html">+ New</a>
+            <!-- <button class="butt b-primary">Start repetition</button> -->
+            <div id="top-usericon"></div>
+            <!-- <button class="butt b-secondary" onclick="logout()">Logout</button> -->
+        </div>
+    </nav>
+    <div id="flux-userlist" style="display: none">
+        <div id="flux-userlist-user">
+            
+        </div>
+        <div class="flux-userlist-button">
+            Profile
+        </div>
+        <div onclick="logout()" class="flux-userlist-button">
+            Logout
+        </div>
+    </div>
+    <div id="content-b">
+        <div class="selection-bar">My progress
+            <div class="selection-bar-end" style="width: calc(100% - 140px);"></div>
+        </div>
+
+    </div>
+</body>
+</HTML>

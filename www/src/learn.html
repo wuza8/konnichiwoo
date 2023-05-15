@@ -45,24 +45,34 @@
 
             searchForm.addEventListener('submit', handleSearchForm);
         }
+
+        function capitalizeFirstLetter(string) 
+        {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+
+        function createArtSchema(artInfo){
+            let code = new String(template);
+            let type = (artInfo.type == null ? "Unknown" : capitalizeFirstLetter(artInfo.type));
+                    
+            code = code.replaceAll("{{id}}", artInfo.id);
+            code = code.replaceAll("{{title}}", artInfo.name);
+            code = code.replaceAll("{{type}}", type);
+            code = code.replaceAll("{{iconsrc}}", "icons\\art-"+type.toLowerCase()+".jpg");
+            code = code.replaceAll("{{progressPercent}}", artInfo.progress);
+            code = code.replaceAll("{{mapper}}", artInfo.mapper);
+            code = code.replaceAll("{{thumbs}}", artInfo.thumbs);
+
+            return code;
+        }
         
         function loadArts(templat) {
             template = templat;
             fetch('/api/gameplay/history')
             .then((response) => response.json())
             .then((data) => {
-                data.forEach(h => {
-                    code = new String(template);
-                    
-                    code = code.replaceAll("{{id}}", h.id);
-                    code = code.replaceAll("{{title}}", h.name);
-                    code = code.replaceAll("{{type}}", h.artType);
-                    code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
-                    code = code.replaceAll("{{progressPercent}}", h.progress);
-                    code = code.replaceAll("{{mapper}}", h.mapper);
-                    code = code.replaceAll("{{thumbs}}", h.thumbs);
-
-                    document.getElementById("history-art-place").innerHTML += code;
+                data.forEach(artInfo => {
+                    document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
                 });
             })
         }
@@ -89,18 +99,8 @@
         function loadSearch(data){
             let place = document.getElementById("search-art-place");
             place.innerHTML="";
-            data.forEach(h => {
-                code = new String(template);
-
-                code = code.replaceAll("{{id}}", h.id);
-                code = code.replaceAll("{{title}}", h.name);
-                code = code.replaceAll("{{type}}", h.type);
-                code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
-                code = code.replaceAll("{{progressPercent}}", h.progress);
-                code = code.replaceAll("{{mapper}}", h.mapper);
-                code = code.replaceAll("{{thumbs}}", h.thumbs);
-
-                place.innerHTML += code;
+            data.forEach(artInfo => {
+                place.innerHTML += createArtSchema(artInfo);
             });
         }
 
@@ -110,7 +110,10 @@
             window.location="/repetition.html";
         }
 
-        
+        function infoDialog(id){
+            document.querySelector("#artdialog").showModal();
+        }
+
     </script>
 </head>
 
@@ -159,5 +162,14 @@
 
         <span id="search-art-place"></span>
     </div>
+
+    <dialog id="artdialog">
+        <h2>Oni no pantsu</h2>
+        <form method="dialog">
+          <button>Edit</button>
+          <button>Ok</button>
+        </form>
+    </dialog>
+      
 </body>
 </HTML>

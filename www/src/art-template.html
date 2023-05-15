@@ -7,8 +7,8 @@
         <div class="art-title">{{title}}</div>
         <div class="art-type">{{type}}</div>
         <div class="art-mapper">
-            <div style="float:left"><img class="art-mapper-avatar" src="logo.png"></div>
-            <div style="float:left; margin-left: 5px;margin-top: 1px">wordmapped by {{mapper}}</div>
+            <!-- <div style="float:left"><img class="art-mapper-avatar" src="logo.png"></div> -->
+            <div>wordmapped by {{mapper}}</div>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <button class="b-shadow butt b-secondary"><img src="info.svg"/></button>
+        <button class="b-shadow butt b-secondary" onclick='infoDialog("{{id}}")'><img src="info.svg"/></button>
         <button class="butt b-third b-shadow" onclick='startRepetition("{{id}}")'><span style=" margin-right: 8px; font-size:20px">Start</span><span ><img style="height: 15px;" src="play.svg"/></span></button>
     </div>
 </div>

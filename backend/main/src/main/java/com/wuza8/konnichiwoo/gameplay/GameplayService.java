@@ -110,6 +110,8 @@ class GameplayService {
             preview.setId(art.getId());
             preview.setName(art.getTextName());
             preview.setThumbs(69L);
+            preview.setType(art.getArtType().toString());
+            preview.setMapper("unknown");
             preview.setProgress(calculateProgress(art.getArtParts().get(0).sentences, records));
             artPreviews.add(preview);
         }
