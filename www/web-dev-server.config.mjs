@@ -5,7 +5,7 @@ export default {
   port: 8000,
   middleware: [
     proxy('/api', {
-      target: 'http://localhost:8081',
+      target: 'http://localhost:8080',
     }),
   ],
   rootDir: process.cwd() + '/src',

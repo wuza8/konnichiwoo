@@ -1,0 +1,24 @@
+#login-container{
+    width: 500px;
+    float:left;
+    margin-left: calc(50% - 250px);
+    margin-right:calc(50% - 250px);
+    background-color: #b2b2b244;
+    border-radius: 5px;
+    color: rgb(211, 211, 211);
+}
+#login-left{
+    width: 280px;
+    padding: 10px;
+    float: left;
+}
+#login-right{
+    float:right;
+    width: 180px;
+    padding-top: 30px;
+    text-align: center;
+}
+
+#login-right > a{
+    color: white;
+}

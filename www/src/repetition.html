@@ -47,6 +47,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/start", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer "+ localStorage.getItem("token"));
             xhr.send(JSON.stringify({
                 artId: artIDE,
                 numberOfToRepeat: 3
@@ -230,6 +231,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/end", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer "+ localStorage.getItem("token"));
             xhr.send(JSON.stringify(repetitionResult));
         }
 

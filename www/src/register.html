@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+
+<HTML>
+<head>
+    <link rel="stylesheet" href="dark.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="layout.css">
+    <script type="text/javascript" src="session.js"></script>
+
+    <script>
+        template = null;
+        loadUser()
+        .then((response) => response.json())
+        .then((data) => {
+            let user = data;
+            document.querySelector("#flux-userlist-user").innerHTML = user.username;
+        })
+
+
+        function init(){
+            document.querySelector("#top-usericon").onclick=function(){
+                userlist = document.querySelector("#flux-userlist");
+
+                if(userlist.style.display == "none"){
+                    userlist.style.display = "block";
+                }
+                else{
+                    userlist.style.display = "none";
+                }
+            }
+
+
+            fetch('art-template.html')
+            .then((response) => response.text())
+            .then((data) => loadArts(data));
+
+            var searchForm = document.querySelector("#search-form");
+            
+            function handleSearchForm(e) {
+                e.preventDefault();
+                let searchString = e.explicitOriginalTarget["name"].value;
+
+                if(searchString!=="")
+                    sendSearch(searchString)
+            };
+
+            searchForm.addEventListener('submit', handleSearchForm);
+        }
+
+        function capitalizeFirstLetter(string) 
+        {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+
+        function createArtSchema(artInfo){
+            let code = new String(template);
+            let type = (artInfo.type == null ? "Unknown" : capitalizeFirstLetter(artInfo.type));
+                    
+            code = code.replaceAll("{{id}}", artInfo.id);
+            code = code.replaceAll("{{title}}", artInfo.name);
+            code = code.replaceAll("{{type}}", type);
+            code = code.replaceAll("{{iconsrc}}", "icons\\art-"+type.toLowerCase()+".jpg");
+            code = code.replaceAll("{{progressPercent}}", artInfo.progress);
+            code = code.replaceAll("{{mapper}}", artInfo.mapper);
+            code = code.replaceAll("{{thumbs}}", artInfo.thumbs);
+
+            return code;
+        }
+        
+        function loadArts(templat) {
+            template = templat;
+            fetch('/api/gameplay/history')
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach(artInfo => {
+                    document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
+                });
+            })
+        }
+
+        function sendSearch(searchName){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                name: searchName
+            }));
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    loadSearch(data);
+                }
+            };
+
+        }
+
+        function loadSearch(data){
+            let place = document.getElementById("search-art-place");
+            place.innerHTML="";
+            data.forEach(artInfo => {
+                place.innerHTML += createArtSchema(artInfo);
+            });
+        }
+
+        function startRepetition(id){
+            localStorage.setItem("lastRepetitionId", id);
+            console.log(id);
+            window.location="/repetition.html";
+        }
+
+        function infoDialog(id){
+            document.querySelector("#artdialog").showModal();
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+    <nav>
+        <img class="logo" src="logo.svg"></img>
+        <ul>
+
+        </ul>
+        <div id="rightSideButtons">
+            
+        </div>
+    </nav>
+
+    <div id="login-container">
+        <img class="logo" style="margin-left: 140px; margin-top: 10px; margin-bottom:20px" src="biglogo.svg" height="100"><br>
+        <div id="login-left">
+            <form id="login-form" class="w-100">
+                <input class="butt b-secondary" type="text" placeholder="login" class="w-100"> <br><br>
+                <input class="butt b-secondary" type="text" placeholder="e-mail" class="w-100"> <br><br>
+                <input class="butt b-secondary" type="password" placeholder="password"><br><br>
+                <input class="butt b-secondary" type="password" placeholder="again password"><br><br>
+                <input class="butt b-primary w-100" type="submit" value="Register">
+            </form>
+        </div>
+        <div id="login-right" style="padding-top: 90px">
+            Welcome! <br><br>   
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+</body>
+</HTML>

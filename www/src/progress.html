@@ -8,15 +8,10 @@
 
     <script>
         template = null;
-        loadUser()
-        .then((response) => response.json())
-        .then((data) => {
-            let user = data;
-            document.querySelector("#flux-userlist-user").innerHTML = user.username;
-        })
-
+        
 
         function init(){
+            
             document.querySelector("#top-usericon").onclick=function(){
                 userlist = document.querySelector("#flux-userlist");
 
@@ -27,89 +22,7 @@
                     userlist.style.display = "none";
                 }
             }
-
-
-            fetch('art-template.html')
-            .then((response) => response.text())
-            .then((data) => loadArts(data));
-
-            var searchForm = document.querySelector("#search-form");
-            
-            function handleSearchForm(e) {
-                e.preventDefault();
-                let searchString = e.explicitOriginalTarget["name"].value;
-
-                if(searchString!=="")
-                    sendSearch(searchString)
-            };
-
-            searchForm.addEventListener('submit', handleSearchForm);
         }
-        
-        function loadArts(templat) {
-            template = templat;
-            fetch('/api/gameplay/history')
-            .then((response) => response.json())
-            .then((data) => {
-                data.forEach(h => {
-                    code = new String(template);
-                    
-                    code = code.replaceAll("{{id}}", h.id);
-                    code = code.replaceAll("{{title}}", h.name);
-                    code = code.replaceAll("{{type}}", h.artType);
-                    code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
-                    code = code.replaceAll("{{progressPercent}}", h.progress);
-                    code = code.replaceAll("{{mapper}}", h.mapper);
-                    code = code.replaceAll("{{thumbs}}", h.thumbs);
-
-                    document.getElementById("history-art-place").innerHTML += code;
-                });
-            })
-        }
-
-        function sendSearch(searchName){
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                name: searchName
-            }));
-
-            xhr.onreadystatechange = function () {
-                if (this.readyState != 4) return;
-
-                if (this.status == 200) {
-                    var data = JSON.parse(this.responseText);
-                    loadSearch(data);
-                }
-            };
-
-        }
-
-        function loadSearch(data){
-            let place = document.getElementById("search-art-place");
-            place.innerHTML="";
-            data.forEach(h => {
-                code = new String(template);
-
-                code = code.replaceAll("{{id}}", h.id);
-                code = code.replaceAll("{{title}}", h.name);
-                code = code.replaceAll("{{type}}", h.type);
-                code = code.replaceAll("{{iconsrc}}", "icons\\"+h.id+".jpg");
-                code = code.replaceAll("{{progressPercent}}", h.progress);
-                code = code.replaceAll("{{mapper}}", h.mapper);
-                code = code.replaceAll("{{thumbs}}", h.thumbs);
-
-                place.innerHTML += code;
-            });
-        }
-
-        function startRepetition(id){
-            localStorage.setItem("lastRepetitionId", id);
-            console.log(id);
-            window.location="/repetition.html";
-        }
-
         
     </script>
 </head>
@@ -140,11 +53,127 @@
             Logout
         </div>
     </div>
+    <script>
+        let user = JSON.parse(localStorage.getItem("user"));
+        document.querySelector("#flux-userlist-user").innerHTML = user.username;
+    </script>
     <div id="content-b">
         <div class="selection-bar">My progress
             <div class="selection-bar-end" style="width: calc(100% - 140px);"></div>
         </div>
+        <span style="color: #aaa">You've learned <span id="progress-count" style="color: #fff; font-weight: bold;"> 12</span> words :O</span>
+        <br><br>
 
+        <div id="progress-place">
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="ok.png"></div>
+            </div>
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="ok.png"></div>
+            </div>
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="ok.png"></div>
+            </div>
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="ok.png"></div>
+            </div>
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="ok.png"></div>
+            </div>
+            <div class="progress-one">
+                <div class="art-image-place">
+                    <img src="word.png" class="art-image" />
+                </div>
+                <div class="progress-text"> 貴方 - You </div>
+                <div class="progress-rating"><img class="progress-img" src="meh.png"></div>
+            </div>
+        </div>
+        <style>
+            .progress-one{
+                width: 24%;
+                background-color: #4d4e4f;
+                float: left;
+                border-radius: 5px;
+                margin: 5px;
+            }
+            .progress-text{
+                line-height:85px;
+                width: 60%;
+                text-align: center;
+                font-size: 20px;
+                color: #abc1dd;
+                font-weight: bold;
+                float:left;
+            }
+            .progress-rating{
+                width:10%;
+                float:left;
+                height: 85px;
+            }
+            .progress-img{
+                padding: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            .art-image-place{
+                width: 20%;
+            }
+        </style>
+        <script>
+            let template='<div class="progress-one"> ' +
+                '<div class="art-image-place">' +
+                    '<img src="word.png" class="art-image" /> ' +
+                '</div> ' +
+                '<div class="progress-text"> {{word}} </div> ' +
+                '<div class="progress-rating"><img class="progress-img" src="{{progress-img}}"></div> '+ 
+            '</div>';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/gameplay/progress", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer "+ localStorage.getItem("token"));
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    document.querySelector("#progress-count").innerHTML = data.length;
+                    let progressPlace = document.querySelector("#progress-place");
+                    progressPlace.innerHTML = "";
+
+                    data.forEach(word => {
+                        progressPlace.innerHTML += template
+                            .replaceAll("{{word}}", word.wordForeign + " - "+ word.wordName)
+                            .replaceAll("{{progress-img}}", (word.failedTimes > 0 ? "meh.png" : "ok.png"))
+
+                    });
+                    console.log(data);
+                }
+            };
+
+        </script>
     </div>
 </body>
 </HTML>
