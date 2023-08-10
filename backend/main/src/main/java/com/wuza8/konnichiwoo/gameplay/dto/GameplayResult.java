@@ -9,5 +9,6 @@ import java.util.List;
 @Setter
 public class GameplayResult {
     private Long gameplayId;
+    private String artId;
     private List<RepetitionPartResult> result;
 }

@@ -2,6 +2,7 @@ package com.wuza8.konnichiwoo.arts;
 
 import com.wuza8.konnichiwoo.arts.dto.*;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,5 +76,18 @@ class ArtsService {
 
     public SentenceEntity getSentence(String id){
         return sentencesRepository.find(id);
+    }
+
+    public List<SentenceEntity> getAllSentences(){
+        return sentencesRepository.findAll();
+    }
+
+    public void updateSentence(String id, List<String> goodEnglish, List<String> goodForeign, String memoPictureURL){
+        SentenceEntity sentence = sentencesRepository.find(id);
+        sentence.setGoodEnglishAnswers(goodEnglish);
+        sentence.setGoodForeignAnswers(goodForeign);
+        if(memoPictureURL != null && memoPictureURL != "")
+            sentence.setMemoPictureURL(memoPictureURL);
+        sentencesRepository.update(sentence);
     }
 }

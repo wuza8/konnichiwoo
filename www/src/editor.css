@@ -49,9 +49,10 @@ nav > ul{
     padding: 10px;
     color: white;
     border: none;
-    width: 70%;
+    width: 96%;
     height: 580px;
     white-space: pre-wrap;
+    display:block;
 }
 
 #texttab-text:focus{
@@ -60,12 +61,13 @@ nav > ul{
 
 #texttab-words{
     background-color: #b1b2b5;
-    width: 25%;
+    width: calc(100% - 20px);
     border-radius: 5px;
-    height: 580px;
-    float: right;
+    height: 520px;
+    float: left;
     border: none;
     padding: 10px;
+    display: block;
 }
 
 .added-wordlist{

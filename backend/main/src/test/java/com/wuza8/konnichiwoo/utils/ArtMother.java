@@ -24,7 +24,6 @@ public class ArtMother {
             ))
             .addedSentences(new ArrayList<>(List.of(SentenceAddWithArtDto.builder()
                     .partTimeId(1L)
-                    .translation("hello")
                     .goodEnglishAnswers(new ArrayList<>(List.of("hello")))
                     .goodForeignAnswers(new ArrayList<>(List.of("konnichiwa")))
                     .memoPictureURL(null)

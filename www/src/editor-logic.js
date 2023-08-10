@@ -7,6 +7,15 @@ const ArtCreator = class {
         this.nextId++;
     }
 
+    addSentence(id){
+        console.log(this.creation.artParts[0]);
+        this.creation.artParts[0].sentences.push(id);
+    }
+
+    removeSentence(id){
+        this.creation.artParts[0].sentences = this.creation.artParts[0].sentences.filter(item => item !== id);
+    }
+
     addNewSentence(romaji){
         let dto = this.SentenceAddWithArtDto(this.nextId);
         dto.goodForeignAnswers = [romaji];

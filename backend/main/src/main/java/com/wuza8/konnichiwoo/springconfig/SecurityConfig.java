@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
@@ -44,10 +45,12 @@ class SecurityConfig {
         http
                 .csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/api/login")
-                .hasRole("USER")
-                .anyRequest()
                 .permitAll()
-                .and().formLogin().disable();;
+                .requestMatchers("/images/upload", "/art/sentences/all", "/art/sentences/update")
+                .hasRole("ADMIN")
+                .anyRequest()
+                .permitAll();
+                        //.and().formLogin().disable();
 
        http.oauth2Login()
                .and()

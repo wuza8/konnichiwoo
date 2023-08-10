@@ -14,4 +14,5 @@ public class RepetitionPart {
     private List<String> goodAnswers;
     private List<String> goodWriteAnswers;
     private Boolean isNew;
+    private String memoPictureURL;
 }

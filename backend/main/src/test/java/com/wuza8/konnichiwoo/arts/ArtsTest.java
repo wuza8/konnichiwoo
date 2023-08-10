@@ -22,7 +22,7 @@ class ArtsTest {
                 .artParts(new ArrayList<>(
                         List.of(ArtPartAddDto.builder()
                                 .subtitle("All")
-                                .sentences(new ArrayList<>(List.of(3L,5L,12L,7L)))
+                                .sentences(new ArrayList<>(List.of("a","b","c","d")))
                                 .newUsedSentences(new ArrayList<>(List.of(1L)))
                                 .build())
                 ))

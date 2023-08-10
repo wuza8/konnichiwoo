@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,6 +26,7 @@ class GameplayService {
         ArtDto art = artsFacade.getArt(gameplayRequest.getArtId());
         List<PlayerRepetitionRecord> playerKnowledge = playerRecords.getPlayerRecords(userId);
 
+        //All sentences used in repetition
         List<String> sentenceIds = new ArrayList<>();
         for(ArtPartDto artPart : art.getArtParts()){
             sentenceIds.addAll(artPart.sentences);
@@ -36,6 +38,7 @@ class GameplayService {
 
             PlayerRepetitionRecord playerWordRecord = null;
 
+            //We search for repetition record that wasn't known by user
             for(PlayerRepetitionRecord record : playerKnowledge){
                 if(record.getWordId().equals(sentenceId)) {
                     playerWordRecord = record;
@@ -50,8 +53,46 @@ class GameplayService {
                         .goodAnswers(sentence.getGoodForeignAnswers())
                         .goodWriteAnswers(sentence.getGoodEnglishAnswers())
                         .isNew(true)
+                        .memoPictureURL(sentence.getMemoPictureURL())
                         .build());
             }
+        }
+        List<PlayerRepetitionRecord> records = new ArrayList<>();
+
+        //If there are less not known sentences than repeat by relative knowledge
+        for(String sentenceId : sentenceIds){
+            if(toRepeat.size() >= gameplayRequest.getNumberOfToRepeat())
+                break;
+
+            PlayerRepetitionRecord playerWordRecord = null;
+
+            //We search for repetition record that wasn't known by user
+            for(PlayerRepetitionRecord record : playerKnowledge){
+                if(record.getWordId().equals(sentenceId)) {
+                    playerWordRecord = record;
+                    break;
+                }
+            }
+
+            if(playerWordRecord != null){
+                records.add(playerWordRecord);
+            }
+        }
+
+        records.sort(Comparator.comparingInt(PlayerRepetitionRecord::getRelativeKnowledge).reversed());
+
+        int z = 0;
+
+        while(toRepeat.size() < gameplayRequest.getNumberOfToRepeat() && z < records.size()){
+            String sentenceId = records.get(z++).getWordId();
+            SentenceDto sentence = artsFacade.getSentence(sentenceId);
+            toRepeat.add(RepetitionPart.builder()
+                    .wordId(sentenceId)
+                    .goodAnswers(sentence.getGoodForeignAnswers())
+                    .goodWriteAnswers(sentence.getGoodEnglishAnswers())
+                    .isNew(true)
+                    .memoPictureURL(sentence.getMemoPictureURL())
+                    .build());
         }
 
         return Gameplay.builder().gameplayId(1L).toRepeat(toRepeat).build();

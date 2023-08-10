@@ -7,3 +7,12 @@ function loadUser() {
 function logout(){
     window.location=backend + "/logout";
 }
+
+function hasRole(user, roleName){
+    let r = false;
+    user.roles.forEach(role => {
+        if(role == roleName) r = true;
+    }
+    )
+    return r;
+}

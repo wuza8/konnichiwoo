@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+
+<HTML>
+<head>
+    <link rel="stylesheet" href="dark.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="wordlist.css">
+    <script type="text/javascript" src="session.js"></script>
+
+    <script>
+        var sentences;
+        loadUser()
+        .then((response) => response.json())
+        .then((data) => {
+            let user = data;
+            document.querySelector("#flux-userlist-user").innerHTML = user.username;
+            hasRole(user, "ROLE_ADMIN");
+        })
+
+
+        function init(){
+            document.querySelector("#top-usericon").onclick=function(){
+                userlist = document.querySelector("#flux-userlist");
+
+                if(userlist.style.display == "none"){
+                    userlist.style.display = "block";
+                }
+                else{
+                    userlist.style.display = "none";
+                }
+            }
+        }
+
+        function capitalizeFirstLetter(string) 
+        {
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+
+        function modifySentence(id){
+            let s;
+            sentences.forEach(sentence=>{
+                if(sentence.id == id){
+                    s = sentence;
+                }
+            });
+
+            console.log(s);
+
+            var form = document.getElementById('updateForm');
+
+            form.elements['id'].value = s.id;
+            form.elements['english'].value = s.goodEnglishAnswers[0];
+            form.elements['japanese1'].value = s.goodForeignAnswers[0];
+            form.elements['japanese2'].value = s.goodForeignAnswers[1];
+
+        }
+
+        function updateSentence(id, english, foreign1, foreign2, imgName){
+            let obj = {};
+            obj.id = id;
+            obj.goodForeignAnswers = [foreign1, foreign2];
+            obj.goodEnglishAnswers = [english];
+            obj.memoPictureURL = imgName;
+
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open('POST', '/api/art/sentences/update', true);
+
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Accept', 'application/json');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                } else {
+                    console.log('Error updating sentence.');
+                }
+            };
+            xhr.send(JSON.stringify(obj));
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+    <nav>
+        <img class="logo" src="logo.svg"></img>
+        <ul>
+            <li onclick='window.location="learn.html"'>Go back</li>
+            <!-- <li onclick='window.location="progress.html"'>My progress</li>
+            <li>Settings</li> -->
+        </ul>
+        <div id="rightSideButtons">
+            <a id="new-button" href="editor.html">+ New</a>
+            <!-- <button class="butt b-primary">Start repetition</button> -->
+            <div id="top-usericon"></div>
+            <!-- <button class="butt b-secondary" onclick="logout()">Logout</button> -->
+        </div>
+    </nav>
+    <div id="flux-userlist" style="display: none">
+        <div id="flux-userlist-user">
+            
+        </div>
+        <div class="flux-userlist-button">
+            Profile
+        </div>
+        <div onclick='document.location.href="imguploader.html"' class="flux-userlist-button">
+            ImgUploader
+        </div>
+        <div onclick="logout()" class="flux-userlist-button">
+            Logout
+        </div>
+    </div>
+    <div id="content-b">
+        <h2> Word list </h2>
+        <div id="wordlist-left"></div>
+        <script>
+            let sentencesPlace = document.getElementById("wordlist-left");
+            
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/art/sentences/all', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    sentences = JSON.parse(xhr.responseText);
+
+                    sentences.forEach(sentence => {
+                        sentencesPlace.innerHTML += 
+                        '<div class="word-one" onclick=\'modifySentence("'+ sentence.id +'")\'>' +
+                            sentence.goodForeignAnswers[0] + " " +
+                            sentence.goodForeignAnswers[1] + " " +
+                            sentence.goodEnglishAnswers[0] + " " +
+                            sentence.memoPictureURL +
+                        '</div>';
+                    });
+
+                    console.log();
+                } else {
+                    console.log('Error loading sentences.');
+                }
+            };
+            xhr.send();
+
+        </script>
+        <div id="wordlist-right">
+            <form id="updateForm">
+                Id: <input type="text" name="id" readonly> <br>
+                English: <input type="text" name="english"><br>
+                Romaji: <input type="text" name="japanese1"><br>
+                Japanese: <input type="text" name="japanese2"><br>
+                Image: <input type="file" name="image"><br>
+                <input type="submit" value="Send update">
+            </form>
+        </div>
+        <script>
+            document.getElementById('updateForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var form = document.getElementById('updateForm');
+                var fileInput = form.elements['image'];
+                var file = fileInput.files[0];
+
+                if(file == null){
+                    updateSentence(form.elements['id'].value,
+                    form.elements['english'].value, 
+                    form.elements['japanese1'].value, 
+                    form.elements['japanese2'].value, 
+                    null);
+
+                    return;
+                }
+    
+                var formData = new FormData();
+                formData.append('file', file);
+    
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/api/images/upload', true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        updateSentence(form.elements['id'].value,
+                        form.elements['english'].value, 
+                        form.elements['japanese1'].value, 
+                        form.elements['japanese2'].value, 
+                        xhr.responseText);
+                    } else {
+                        console.log('Error uploading image.');
+                    }
+                };
+                xhr.send(formData);
+            });
+        </script>
+
+    </div>
+    
+</body>
+</HTML>

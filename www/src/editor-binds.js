@@ -130,3 +130,29 @@ function removeWord(id){
 function printCreation() {
     console.log(artCreator.creation);
 }
+
+function sendCreation(){
+    artCreator.creation.artType = artCreator.creation.artType.toUpperCase();
+    let added = [];
+
+    artCreator.creation.addedSentences.forEach(z => {
+        added.push(z.partTimeId);
+    });
+
+    artCreator.creation.artParts[0].newUsedSentences = added;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/art/add', true);
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Accept', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            alert("Added successfully!")
+        } else {
+            alert("Error adding!")
+        }
+    };
+    xhr.send(JSON.stringify(artCreator.creation));
+}

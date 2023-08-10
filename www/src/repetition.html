@@ -38,12 +38,13 @@
 
         repetitionResult = {
             gameplayId: 1,
+            artId: "error", 
             result: []
         }
 
         function init(){
             let artIDE = localStorage.getItem("lastRepetitionId");
-            
+            repetitionResult.artId = artIDE;
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/start", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -113,6 +114,14 @@
             });
         }
 
+        function setImage(image){
+            if(image != null && image != "")
+                document.getElementById("repetition-image").style.backgroundImage= "url('images/"+image+"')";
+            else
+            document.getElementById("repetition-image").style.backgroundImage="url('luckystar.png')";
+            console.log(image);
+        }
+
         function loadNextTest(){
             test = register[0];
 
@@ -122,12 +131,14 @@
             }
 
             console.log(test);
+            setImage(test.word.memoPictureURL);
 
             if(test.testType == TestType.ShowNewWord){
                 repetitionAnswer.style.display="none";
                 buttIdk.style.display="none";
                 buttCheck.style.display="none";
                 buttOk.style.display="inline-block";
+                
                 repetitionCaption.innerHTML = test.word.goodWriteAnswers[0] + " = " + test.word.goodAnswers[1] + " = " + test.word.goodAnswers[0];
             }
             else {
@@ -225,12 +236,19 @@
         function endGame(){
             document.getElementById("repetition-main").style.display="none";
             document.getElementById("repetition-results").style.display="block";
-            document.getElementById("repetition-results").innerHTML = JSON.stringify(repetitionResult);
             
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:8000/api/gameplay/end", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify(repetitionResult));
+
+            var errors = 0;
+
+            repetitionResult.result.forEach(res =>{
+                errors+= res.failedTimes;
+            });
+
+            document.getElementById("error-count-place").innerHTML = " "+ errors;
         }
 
         init();
@@ -242,7 +260,7 @@
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
-            <li><a href="learn.html">End session</a></li>
+            <li onclick='document.location.href="learn.html"'>End session</li>
         </ul>
         <div id="rightSideButtons">
             <button class="butt b-secondary">Logout</button>
@@ -276,6 +294,8 @@
     <div style="display:none" class="repetition-main" id="repetition-results">
         <div id="repetition-end">
             <h2>Repetition end!</h2>
+            Errors:<span id="error-count-place"></span><br><br>
+            <button onclick='document.location.href="learn.html"' class="butt b-primary">Finish</button>
         </div>
     </div>
 

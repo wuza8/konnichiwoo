@@ -13,6 +13,11 @@
         .then((data) => {
             let user = data;
             document.querySelector("#flux-userlist-user").innerHTML = user.username;
+            if(hasRole(user, "ROLE_ADMIN")){
+                document.querySelector("#new-button").style.display = "inline-block";
+                document.querySelector("#imguploader-button").style.display = "inline-block";
+                
+            }
         })
 
 
@@ -44,6 +49,7 @@
             };
 
             searchForm.addEventListener('submit', handleSearchForm);
+            
         }
 
         function capitalizeFirstLetter(string) 
@@ -71,10 +77,13 @@
             fetch('/api/gameplay/history')
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
+                document.getElementById("history-art-place").innerHTML = "";
                 data.forEach(artInfo => {
                     document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
                 });
             })
+            sendSearch("*");
         }
 
         function sendSearch(searchName){
@@ -90,6 +99,7 @@
 
                 if (this.status == 200) {
                     var data = JSON.parse(this.responseText);
+                    console.log(data);
                     loadSearch(data);
                 }
             };
@@ -122,11 +132,11 @@
         <img class="logo" src="logo.svg"></img>
         <ul>
             <li onclick='window.location="learn.html"'>Learn</li>
-            <li onclick='window.location="progress.html"'>My progress</li>
-            <li>Settings</li>
+            <!-- <li onclick='window.location="progress.html"'>My progress</li> -->
+            <!-- <li>Settings</li> -->
         </ul>
         <div id="rightSideButtons">
-            <a id="new-button" href="editor.html">+ New</a>
+            <a id="new-button" href="editor.html" style="display:none">+ New</a>
             <!-- <button class="butt b-primary">Start repetition</button> -->
             <div id="top-usericon"></div>
             <!-- <button class="butt b-secondary" onclick="logout()">Logout</button> -->
@@ -136,8 +146,11 @@
         <div id="flux-userlist-user">
             
         </div>
-        <div class="flux-userlist-button">
+        <!-- <div class="flux-userlist-button">
             Profile
+        </div> -->
+        <div id="imguploader-button" onclick='document.location.href="imguploader.html"' class="flux-userlist-button" style="display:none">
+            ImgUploader
         </div>
         <div onclick="logout()" class="flux-userlist-button">
             Logout
@@ -147,7 +160,7 @@
         <div class="selection-bar">Continue learning
             <div class="selection-bar-end"></div>
         </div>
-        <span id="history-art-place"></span>
+        <span id="history-art-place"><span id="history-art-noplay">You haven't play anything yet.</span></span>
         <div class="button-history-place">
             <!-- <button class="butt b-secondary button-history">Show all history</button> -->
         </div>
@@ -159,7 +172,7 @@
         <form id="search-form">
             <input type="text" placeholder="search" name="name"> <input type="submit" value="Search">
         </form>
-
+        <br>
         <span id="search-art-place"></span>
     </div>
 
@@ -170,6 +183,5 @@
           <button>Ok</button>
         </form>
     </dialog>
-      
 </body>
 </HTML>

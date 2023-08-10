@@ -1,0 +1,25 @@
+#wordlist-left{
+    float: left;
+    width: 50%;
+    height: 400px;
+    overflow-y: scroll;
+}
+
+#wordlist-right{
+    float: right;
+    width: 49%;
+    height: 200px;
+    background: #808080;
+    padding: 5px;   
+    border-radius: 5px; 
+}
+.word-one{
+    background: #808080;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px; 
+}
+.word-one:hover{
+    background: #909090;
+    cursor:pointer;
+}
