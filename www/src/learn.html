@@ -8,18 +8,6 @@
 
     <script>
         template = null;
-        loadUser()
-        .then((response) => response.json())
-        .then((data) => {
-            let user = data;
-            document.querySelector("#flux-userlist-user").innerHTML = user.username;
-            if(hasRole(user, "ROLE_ADMIN")){
-                document.querySelector("#new-button").style.display = "inline-block";
-                document.querySelector("#imguploader-button").style.display = "inline-block";
-                
-            }
-        })
-
 
         function init(){
             document.querySelector("#top-usericon").onclick=function(){
@@ -74,22 +62,34 @@
         
         function loadArts(templat) {
             template = templat;
-            fetch('/api/gameplay/history')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                document.getElementById("history-art-place").innerHTML = "";
-                data.forEach(artInfo => {
-                    document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
-                });
-            })
-            sendSearch("*");
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/gameplay/history", true);
+            xhr.setRequestHeader("Authorization", "Bearer "+ localStorage.getItem("token"));
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    
+                    if( data.length != 0) {
+                        document.getElementById("history-art-place").innerHTML = "";
+                    }
+
+                    data.forEach(artInfo => {
+                        document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
+                    });
+                }
+            };
         }
 
         function sendSearch(searchName){
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
+            xhr.open("POST", "/api/gameplay/search", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer "+ localStorage.getItem("token"));
             xhr.send(JSON.stringify({
                 name: searchName
             }));
@@ -156,12 +156,17 @@
             Logout
         </div>
     </div>
+    <script>
+        let user = JSON.parse(localStorage.getItem("user"));
+        document.querySelector("#flux-userlist-user").innerHTML = user.username;
+    </script>
     <div id="content-b">
         <div class="selection-bar">Continue learning
             <div class="selection-bar-end"></div>
         </div>
-        <span id="history-art-place"><span id="history-art-noplay">You haven't play anything yet.</span></span>
+        <span id="history-art-place"><span style="color: #aaa">You haven't played anything yet.</span></span>
         <div class="button-history-place">
+            
             <!-- <button class="butt b-secondary button-history">Show all history</button> -->
         </div>
 
@@ -170,7 +175,7 @@
         </div>
 
         <form id="search-form">
-            <input type="text" placeholder="search" name="name"> <input type="submit" value="Search">
+            <input class="b-secondary butt-small" type="text" placeholder="search" name="name"> <input class="b-secondary butt-small" type="submit" value="Search">
         </form>
         <br>
         <span id="search-art-place"></span>
