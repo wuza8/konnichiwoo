@@ -6,119 +6,12 @@
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="layout.css">
     <script type="text/javascript" src="session.js"></script>
+    <title> Register - Kwoo</title>
+    
 
-    <script>
-        template = null;
-        loadUser()
-        .then((response) => response.json())
-        .then((data) => {
-            let user = data;
-            document.querySelector("#flux-userlist-user").innerHTML = user.username;
-        })
-
-
-        function init(){
-            document.querySelector("#top-usericon").onclick=function(){
-                userlist = document.querySelector("#flux-userlist");
-
-                if(userlist.style.display == "none"){
-                    userlist.style.display = "block";
-                }
-                else{
-                    userlist.style.display = "none";
-                }
-            }
-
-
-            fetch('art-template.html')
-            .then((response) => response.text())
-            .then((data) => loadArts(data));
-
-            var searchForm = document.querySelector("#search-form");
-            
-            function handleSearchForm(e) {
-                e.preventDefault();
-                let searchString = e.explicitOriginalTarget["name"].value;
-
-                if(searchString!=="")
-                    sendSearch(searchString)
-            };
-
-            searchForm.addEventListener('submit', handleSearchForm);
-        }
-
-        function capitalizeFirstLetter(string) 
-        {
-            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-        }
-
-        function createArtSchema(artInfo){
-            let code = new String(template);
-            let type = (artInfo.type == null ? "Unknown" : capitalizeFirstLetter(artInfo.type));
-                    
-            code = code.replaceAll("{{id}}", artInfo.id);
-            code = code.replaceAll("{{title}}", artInfo.name);
-            code = code.replaceAll("{{type}}", type);
-            code = code.replaceAll("{{iconsrc}}", "icons\\art-"+type.toLowerCase()+".jpg");
-            code = code.replaceAll("{{progressPercent}}", artInfo.progress);
-            code = code.replaceAll("{{mapper}}", artInfo.mapper);
-            code = code.replaceAll("{{thumbs}}", artInfo.thumbs);
-
-            return code;
-        }
-        
-        function loadArts(templat) {
-            template = templat;
-            fetch('/api/gameplay/history')
-            .then((response) => response.json())
-            .then((data) => {
-                data.forEach(artInfo => {
-                    document.getElementById("history-art-place").innerHTML += createArtSchema(artInfo);
-                });
-            })
-        }
-
-        function sendSearch(searchName){
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:8000/api/gameplay/search", true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                name: searchName
-            }));
-
-            xhr.onreadystatechange = function () {
-                if (this.readyState != 4) return;
-
-                if (this.status == 200) {
-                    var data = JSON.parse(this.responseText);
-                    loadSearch(data);
-                }
-            };
-
-        }
-
-        function loadSearch(data){
-            let place = document.getElementById("search-art-place");
-            place.innerHTML="";
-            data.forEach(artInfo => {
-                place.innerHTML += createArtSchema(artInfo);
-            });
-        }
-
-        function startRepetition(id){
-            localStorage.setItem("lastRepetitionId", id);
-            console.log(id);
-            window.location="/repetition.html";
-        }
-
-        function infoDialog(id){
-            document.querySelector("#artdialog").showModal();
-        }
-
-    </script>
 </head>
 
-<body onload="init()">
+<body>
     <nav>
         <img class="logo" src="logo.svg"></img>
         <ul>
@@ -133,10 +26,10 @@
         <img class="logo" style="margin-left: 140px; margin-top: 10px; margin-bottom:20px" src="biglogo.svg" height="100"><br>
         <div id="login-left">
             <form id="login-form" class="w-100">
-                <input class="butt b-secondary" type="text" placeholder="login" class="w-100"> <br><br>
-                <input class="butt b-secondary" type="text" placeholder="e-mail" class="w-100"> <br><br>
-                <input class="butt b-secondary" type="password" placeholder="password"><br><br>
-                <input class="butt b-secondary" type="password" placeholder="again password"><br><br>
+                <input class="butt b-secondary" name="login" type="text" placeholder="login" class="w-100"> <br><br>
+                <input class="butt b-secondary" name="email" type="text" placeholder="e-mail" class="w-100"> <br><br>
+                <input class="butt b-secondary" name="password" type="password" placeholder="password"><br><br>
+                <input class="butt b-secondary" name="password2" type="password" placeholder="again password"><br><br>
                 <input class="butt b-primary w-100" type="submit" value="Register">
             </form>
         </div>
@@ -145,5 +38,43 @@
             Already have an account? <a href="login.html">Login</a>
         </div>
     </div>
+
+    <script>
+        let form = document.querySelector("#login-form");
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            //Lock form while sending request
+            form["login"].readOnly = true;
+            form["email"].readOnly = true;
+            form["password"].readOnly = true;
+            form["password2"].readOnly = true;
+
+            //Send request
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/auth/register", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                login: form["login"].value,
+                email: form["email"].value,
+                password: form["password"].value
+            }));
+
+            xhr.onreadystatechange = function () {
+                //When it's already sent, we turn off lock
+                form["login"].readOnly = true;
+                form["email"].readOnly = false;
+                form["password"].readOnly = false;
+                form["password2"].readOnly = false;
+
+                if (this.readyState != 4) return;
+
+                if (this.status == 200) {
+                    document.location.href = "login.html";
+                }
+            };
+ 
+        });
+    </script>
 </body>
 </HTML>

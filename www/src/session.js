@@ -22,3 +22,7 @@ function logout(){
         }
     };
 }
+
+function isAdmin(user){
+    //return user.roles.
+}

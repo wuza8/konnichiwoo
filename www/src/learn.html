@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="dark.css">
     <link rel="stylesheet" href="layout.css">
     <script type="text/javascript" src="session.js"></script>
+    <title> Learn - Kwoo</title>
 
     <script>
         template = null;
@@ -20,7 +21,6 @@
                     userlist.style.display = "none";
                 }
             }
-
 
             fetch('art-template.html')
             .then((response) => response.text())
@@ -159,6 +159,11 @@
     <script>
         let user = JSON.parse(localStorage.getItem("user"));
         document.querySelector("#flux-userlist-user").innerHTML = user.username;
+        console.log(user);
+        if( user.isAdmin ){
+            document.querySelector("#imguploader-button").style.display="block";
+            document.querySelector("#new-button").style.display="inline-block";
+        }
     </script>
     <div id="content-b">
         <div class="selection-bar">Continue learning
